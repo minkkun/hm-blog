@@ -18,13 +18,13 @@ const CONFIG = {
   ],
   // blog setting (required)
   blog: {
-    title: "morethan-log",
-    description: "welcome to morethan-log!",
+    title: "kun place of mink",
+    description: "a piece of hien minh",
     scheme: "dark", // 'light' | 'dark' | 'system'
   },
 
   // CONFIG configration (required)
-  link: "https://minnieminty.vercel.app",
+  link: "https://kunplaceofmink.vercel.app",
   since: "", // If leave this empty, current year will be used.
   lang: "en-US", // ['en-US', 'zh-CN', 'zh-HK', 'zh-TW', 'ja-JP', 'es-ES', 'ko-KR']
   ogImageGenerateURL: "", // The link to generate OG image, don't end with a slash
