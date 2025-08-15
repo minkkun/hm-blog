@@ -11,6 +11,7 @@ const CONFIG = {
   projects: [
     {
       name: `kun place of mink`,
+      href: 'https://kunplaceofmink.vercel.app',
     },
   ],
   // blog setting (required)
