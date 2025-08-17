@@ -39,6 +39,7 @@ import 'prismjs/components/prism-swift.js'
 import 'prismjs/components/prism-wasm.js'
 import 'prismjs/components/prism-yaml.js'
 import "prismjs/components/prism-go.js"
+import SnowEffect from "src/layouts/RootLayout/SnowEffect";
 
 type Props = {
   children: ReactNode
@@ -58,7 +59,9 @@ const RootLayout = ({ children }: Props) => {
       {/* {metaConfig.type !== "Paper" && <Header />} */}
       <Header fullWidth={false} />
       <StyledMain>{children}</StyledMain>
+      <SnowEffect />
     </ThemeProvider>
+    
   )
 }
 
