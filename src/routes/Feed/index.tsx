@@ -50,9 +50,10 @@ const Feed: React.FC<Props> = () => {
       >
         <ProfileCard />
         <iframe
-          width="640"
-          height="180"
+          width="100%"
+          height="240"
           src="https://zingmp3.vn/embed/song/ZZ9IZ7FC?start=true"
+          allow = "autoplay; encrypted-media"
         />
 
         <ContactCard />
