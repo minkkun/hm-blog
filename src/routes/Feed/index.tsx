@@ -49,7 +49,12 @@ const Feed: React.FC<Props> = () => {
         }}
       >
         <ProfileCard />
-        <iframe src="https://www.nhaccuatui.com/mh/auto/i8YjnXsUt9T5" width="auto" height="100" allow="autoplay"></iframe>
+        <iframe
+          width="640"
+          height="180"
+          src="https://zingmp3.vn/embed/song/ZZ9IZ7FC?start=true"
+        />
+
         <ContactCard />
         <div className="footer">
           <Footer />
