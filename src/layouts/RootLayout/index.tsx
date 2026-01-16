@@ -63,9 +63,9 @@ const RootLayout = ({ children }: Props) => {
       <Scripts />
       {/* // TODO: replace react query */}
       {/* {metaConfig.type !== "Paper" && <Header />} */}
-      <Header fullWidth={false} />
-      <StyledMain>{children}</StyledMain>
-  {router.pathname === "/" && <SnowEffect />}
+    {router.pathname === "/" && <SnowEffect />}
+    <Header fullWidth={false} />
+    <StyledMain>{children}</StyledMain>
     </ThemeProvider>
     
   )

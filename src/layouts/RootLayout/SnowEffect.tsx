@@ -74,9 +74,13 @@ export default function SnowEffect() {
       role="presentation"
       style={{
         position: "fixed",
-        inset: 0,
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
         width: "100vw",
         height: "100vh",
+        display: "block",
         pointerEvents: "none",
         zIndex: 0, // keep behind content that has z-index >= 1, but above the page background
       }}
