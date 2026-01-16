@@ -66,17 +66,19 @@ export default function SnowEffect() {
     };
   }, []);
 
-  return (
+    return (
     <canvas
       ref={canvasRef}
       id="snow-canvas"
+      aria-hidden="true"
+      role="presentation"
       style={{
         position: "fixed",
         inset: 0,
         width: "100vw",
         height: "100vh",
         pointerEvents: "none",
-        zIndex: 9999,
+        zIndex: -1, // render behind page content (so it doesn't cover textboxes)
       }}
     />
   );
