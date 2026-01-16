@@ -78,7 +78,7 @@ export default function SnowEffect() {
         width: "100vw",
         height: "100vh",
         pointerEvents: "none",
-        zIndex: -1, // render behind page content (so it doesn't cover textboxes)
+        zIndex: 0, // keep behind content that has z-index >= 1, but above the page background
       }}
     />
   );

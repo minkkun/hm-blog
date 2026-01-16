@@ -78,4 +78,6 @@ const StyledMain = styled.main`
   width: 100%;
   max-width: 1120px;
   padding: 0 1rem;
+  position: relative;
+  z-index: 1; /* ensure main content (inputs/text) renders above the snow canvas */
 `
