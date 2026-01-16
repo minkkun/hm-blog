@@ -39,7 +39,12 @@ import 'prismjs/components/prism-swift.js'
 import 'prismjs/components/prism-wasm.js'
 import 'prismjs/components/prism-yaml.js'
 import "prismjs/components/prism-go.js"
-import SnowEffect from "src/layouts/RootLayout/SnowEffect";
+import dynamic from "next/dynamic";
+const SnowEffect = dynamic(() => import("./SnowEffect"), {
+  ssr: false,
+  loading: () => null,
+});
+import { useRouter } from "next/router";
 
 type Props = {
   children: ReactNode
@@ -51,6 +56,7 @@ const RootLayout = ({ children }: Props) => {
   useEffect(() => {
     Prism.highlightAll();
   }, []);
+  const router = useRouter()
 
   return (
     <ThemeProvider scheme={scheme}>
@@ -59,7 +65,7 @@ const RootLayout = ({ children }: Props) => {
       {/* {metaConfig.type !== "Paper" && <Header />} */}
       <Header fullWidth={false} />
       <StyledMain>{children}</StyledMain>
-      <SnowEffect />
+  {router.pathname === "/" && <SnowEffect />}
     </ThemeProvider>
     
   )
