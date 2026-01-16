@@ -6,16 +6,30 @@ export default function SnowEffect() {
   const rafRef = useRef<number | null>(null);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    // create canvas and append to body so it doesn't affect layout or stacking contexts
+    const canvas = document.createElement("canvas");
+    canvas.id = "snow-canvas";
+    canvas.setAttribute("aria-hidden", "true");
+    canvas.setAttribute("role", "presentation");
+    Object.assign(canvas.style, {
+      position: "fixed",
+      top: "0",
+      left: "0",
+      width: "100vw",
+      height: "100vh",
+      pointerEvents: "none",
+      zIndex: "0",
+    } as Partial<CSSStyleDeclaration>);
+    document.body.appendChild(canvas);
+    canvasRef.current = canvas;
+
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     // HiDPI-aware sizing so text flakes look crisp
     const setCanvasSize = () => {
       const dpr = Math.max(1, window.devicePixelRatio || 1);
-      canvas.style.width = "100vw";
-      canvas.style.height = "100vh";
+      // keep CSS size 100% so it never impacts layout; canvas bitmap uses device pixels
       canvas.width = Math.floor(window.innerWidth * dpr);
       canvas.height = Math.floor(window.innerHeight * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
@@ -31,8 +45,8 @@ export default function SnowEffect() {
       const total = 140;
       for (let i = 0; i < total; i++) {
         snowflakes.push({
-          x: Math.random() * canvas.width,
-          y: Math.random() * canvas.height,
+          x: Math.random() * (canvas.width || window.innerWidth),
+          y: Math.random() * (canvas.height || window.innerHeight),
           size: Math.random() * 24 + 8,
           speed: Math.random() * 1 + 0.5,
           shape: shapes[Math.floor(Math.random() * shapes.length)],
@@ -42,6 +56,7 @@ export default function SnowEffect() {
     };
 
     const step = () => {
+      if (!canvasRef.current) return;
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       for (const flake of snowflakes) {
         ctx.globalAlpha = flake.opacity;
@@ -63,27 +78,13 @@ export default function SnowEffect() {
     return () => {
       window.removeEventListener("resize", setCanvasSize);
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
+      if (canvasRef.current && canvasRef.current.parentNode) {
+        canvasRef.current.parentNode.removeChild(canvasRef.current);
+      }
+      canvasRef.current = null;
     };
   }, []);
 
-    return (
-    <canvas
-      ref={canvasRef}
-      id="snow-canvas"
-      aria-hidden="true"
-      role="presentation"
-      style={{
-        position: "fixed",
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        width: "100vw",
-        height: "100vh",
-        display: "block",
-        pointerEvents: "none",
-        zIndex: 0, // keep behind content that has z-index >= 1, but above the page background
-      }}
-    />
-  );
+  // nothing in the React render tree — canvas is appended to document.body
+  return null;
 }
