@@ -28,8 +28,9 @@ const CONFIG = {
   ogImageGenerateURL: "", // The link to generate OG image, don't end with a slash
 
   // notion configuration (required)
+  // prefer NOTION_DATABASE_ID; fallback to NOTION_PAGE_ID for older setups
   notionConfig: {
-    pageId: process.env.NOTION_PAGE_ID,
+    databaseId: process.env.NOTION_DATABASE_ID || process.env.NOTION_PAGE_ID,
   },
 
   // plugin configuration (optional)

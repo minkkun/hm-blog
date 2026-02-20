@@ -8,17 +8,19 @@ import { TPosts } from "src/types"
 
 export const getPosts = async (): Promise<TPosts> => {
   try {
-    let pageId = CONFIG.notionConfig.pageId as string
-    const api = new NotionAPI()
+    // support both databaseId (preferred) and pageId (legacy)
+    const notionCfg: any = CONFIG.notionConfig
+    let targetId = (notionCfg.databaseId || notionCfg.pageId) as string
+      const api = new NotionAPI()
 
-    const response = await api.getPage(pageId)
-    pageId = idToUuid(pageId)
+      const response = await api.getPage(targetId)
+      targetId = idToUuid(targetId)
+    
+      const collection = Object.values(response.collection || {})[0]?.value
+      const block = response.block || {}
+      const schema = collection?.schema
 
-    const collection = Object.values(response.collection || {})[0]?.value
-    const block = response.block || {}
-    const schema = collection?.schema
-
-    const rawMetadata = block[pageId]?.value
+      const rawMetadata = block[targetId]?.value
 
     // If not a collection view, return empty safely
     if (
