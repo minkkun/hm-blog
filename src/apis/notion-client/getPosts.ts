@@ -6,74 +6,63 @@ import getAllPageIds from "src/libs/utils/notion/getAllPageIds"
 import getPageProperties from "src/libs/utils/notion/getPageProperties"
 import { TPosts } from "src/types"
 
-export const getPosts = async (): Promise<TPosts> => {
-  try {
-    // support both databaseId (preferred) and pageId (legacy)
-    const notionCfg: any = CONFIG.notionConfig
-    let targetId = (notionCfg.databaseId || notionCfg.pageId) as string
-      const api = new NotionAPI()
+/**
+ * @param {{ includePages: boolean }} - false: posts only / true: include pages
+ */
 
-      const response = await api.getPage(targetId)
-      targetId = idToUuid(targetId)
-    
-      const collection = Object.values(response.collection || {})[0]?.value
-      const block = response.block || {}
-      const schema = collection?.schema
+// TODO: react query를 사용해서 처음 불러온 뒤로는 해당데이터만 사용하도록 수정
+export const getPosts = async () => {
+  // Use pageId if present, otherwise fall back to databaseId
+  const configuredId = (CONFIG.notionConfig as any).pageId ?? CONFIG.notionConfig.databaseId
+  if (!configuredId) {
+    // No configured id, return empty list
+    return []
+  }
+  let id = configuredId as string
+  const api = new NotionAPI()
 
-      const rawMetadata = block[targetId]?.value
+  const response = await api.getPage(id)
+  id = idToUuid(id)
+  const collectionValue = Object.values(response.collection)[0]?.value as any
+  const collection = collectionValue?.value ?? collectionValue
+  const block = response.block
+  const schema = collection?.schema
 
-    // If not a collection view, return empty safely
-    if (
-      rawMetadata?.type !== "collection_view_page" &&
-      rawMetadata?.type !== "collection_view"
-    ) {
-      console.warn("Not a collection view page")
-      return []
-    }
+  const blockValue = (block[id].value as any)?.value ?? block[id].value
+  const rawMetadata = blockValue
 
-    if (!schema) {
-      console.warn("No schema found in Notion response")
-      return []
-    }
-
+  // Check Type
+  if (
+    rawMetadata?.type !== "collection_view_page" &&
+    rawMetadata?.type !== "collection_view"
+  ) {
+    return []
+  } else {
+    // Construct Data
     const pageIds = getAllPageIds(response)
-    const data: any[] = []
-
+    const data = []
     for (let i = 0; i < pageIds.length; i++) {
       const id = pageIds[i]
+      const properties = (await getPageProperties(id, block, schema)) || null
+      // Add fullwidth, createdtime to properties
+      const pageBlockValue = (block[id].value as any)?.value ?? block[id].value
+      properties.createdTime = new Date(
+        pageBlockValue?.created_time
+      ).toString()
+      properties.fullWidth =
+        (pageBlockValue?.format as any)?.page_full_width ?? false
 
-      try {
-        const properties = await getPageProperties(id, block, schema)
-
-        // Skip invalid/broken posts
-        if (!properties) continue
-
-        const createdTimeRaw = block[id]?.value?.created_time
-        const createdTime = createdTimeRaw
-          ? new Date(createdTimeRaw).toString()
-          : new Date().toString()
-
-        properties.createdTime = createdTime
-        properties.fullWidth =
-          block[id]?.value?.format?.page_full_width ?? false
-
-        data.push(properties)
-      } catch (err) {
-        console.warn(`Skipping broken post: ${id}`, err)
-        continue
-      }
+      data.push(properties)
     }
 
-    // Safe sort
+    // Sort by date
     data.sort((a: any, b: any) => {
-      const dateA = new Date(a?.date?.start_date || a?.createdTime || 0).getTime()
-      const dateB = new Date(b?.date?.start_date || b?.createdTime || 0).getTime()
+      const dateA: any = new Date(a?.date?.start_date || a.createdTime)
+      const dateB: any = new Date(b?.date?.start_date || b.createdTime)
       return dateB - dateA
     })
 
-    return data as TPosts
-  } catch (error) {
-    console.error("Error fetching Notion posts:", error)
-    return []
+    const posts = data as TPosts
+    return posts
   }
 }
