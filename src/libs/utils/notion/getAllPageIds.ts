@@ -5,6 +5,11 @@ export default function getAllPageIds(
   response: ExtendedRecordMap,
   viewId?: string
 ) {
+  if (!response.collection_query) {
+    console.error("response:", Object.keys(response))
+    throw new Error("response.collection_query is undefined")
+  }
+
   const collectionQuery = response.collection_query
   const views = Object.values(collectionQuery)[0]
 

@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://kunplaceofmink.vercel.app
+
+# Sitemaps
+Sitemap: https://kunplaceofmink.vercel.app/sitemap.xml
