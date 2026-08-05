@@ -33,7 +33,8 @@ yarn-error.log*
 
 # vercel
 .vercel
-# public/robots.txt
-# public/sitemap.xml
+# next-sitemap generates these at postbuild; a committed
+# public/sitemap.xml collides with src/pages/sitemap.xml.tsx
+public/sitemap.xml
 
 /.firebase

@@ -33,6 +33,7 @@
     "react-notion-x": "^6.16.0"
   },
   "devDependencies": {
+    "@next/env": "^13.4.9",
     "@types/gtag.js": "^0.0.12",
     "@types/node": "^18.11.15",
     "@types/react": "^18.0.26",
