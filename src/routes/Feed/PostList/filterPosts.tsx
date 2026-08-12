@@ -28,8 +28,10 @@ export function filterPosts({
       )
     })
     .sort((a, b) => {
-      const dateA = new Date(a.date.start_date).getTime()
-      const dateB = new Date(b.date.start_date).getTime()
+      // `date` is unset for posts with no Date property in Notion; fall back to
+      // createdTime the same way getPosts and the other filterPosts do.
+      const dateA = new Date(a?.date?.start_date || a.createdTime).getTime()
+      const dateB = new Date(b?.date?.start_date || b.createdTime).getTime()
       return order === "desc" ? dateB - dateA : dateA - dateB
     })
 }
