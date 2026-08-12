@@ -74,13 +74,13 @@ const StyledWrapper = styled.form`
   /* Outlined and narrow, so it reads as an identity field rather than as
      more of the message. */
   .name {
-    padding: 0.375rem 0.875rem;
-    max-width: 15rem;
+    padding: 0.5rem 1rem;
+    max-width: 16rem;
     border-radius: 999px;
     border: 1px solid ${({ theme }) => theme.colors.gray6};
     background-color: transparent;
-    font-size: 0.875rem;
-    font-weight: 600;
+    font-size: 1.0625rem;
+    font-weight: 700;
 
     :focus {
       border-color: ${({ theme }) => theme.colors.gray8};
