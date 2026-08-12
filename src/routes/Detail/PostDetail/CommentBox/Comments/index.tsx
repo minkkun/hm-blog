@@ -9,7 +9,7 @@ type Props = {
 }
 
 const Comments: React.FC<Props> = ({ postId }) => {
-  const { data: comments, isLoading, isError } = useCommentsQuery(postId)
+  const { data: comments, isLoading, isError, error } = useCommentsQuery(postId)
 
   return (
     <StyledWrapper>
@@ -18,7 +18,11 @@ const Comments: React.FC<Props> = ({ postId }) => {
       </h2>
       <CommentForm postId={postId} />
       {isLoading && <p className="status">Loading comments...</p>}
-      {isError && <p className="status">Couldn&apos;t load comments.</p>}
+      {isError && (
+        <p className="status">
+          {(error as Error)?.message || "Couldn't load comments."}
+        </p>
+      )}
       {comments && <CommentList comments={comments} />}
     </StyledWrapper>
   )

@@ -4,6 +4,18 @@ import { createComment, getComments } from "src/libs/notion-comments"
 const readField = (value: unknown) =>
   typeof value === "string" ? value.trim() : ""
 
+/**
+ * Notion's own error text (bad token, database not shared with the integration,
+ * renamed column) is the only thing that makes a failure diagnosable, but it
+ * names internal ids — so pass it through everywhere except production.
+ */
+const errorBody = (message: string, err: unknown) => {
+  const reason = err instanceof Error ? err.message : String(err)
+  return process.env.VERCEL_ENV === "production"
+    ? { message }
+    : { message, reason }
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
@@ -22,7 +34,9 @@ export default async function handler(
       return res.status(200).json({ comments })
     } catch (err) {
       console.error("Failed to load comments", err)
-      return res.status(500).json({ message: "Failed to load comments" })
+      return res
+        .status(500)
+        .json(errorBody("Failed to load comments", err))
     }
   }
 
@@ -46,7 +60,7 @@ export default async function handler(
       return res.status(201).json({ comment })
     } catch (err) {
       console.error("Failed to create comment", err)
-      return res.status(500).json({ message: "Failed to post comment" })
+      return res.status(500).json(errorBody("Failed to post comment", err))
     }
   }
 
