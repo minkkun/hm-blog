@@ -41,6 +41,15 @@ export type PostDetail = TPost & {
 
 export type TPosts = TPost[]
 
+export type TComment = {
+  id: string
+  name: string
+  body: string
+  createdTime: string
+}
+
+export type TComments = TComment[]
+
 export type TTags = {
   [tagName: string]: number
 }

@@ -42,6 +42,45 @@ Next.js static blog using Notion as a Content Management System (CMS). Supports 
    - `NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION` : For Google search console Plugin.
    - `NEXT_PUBLIC_NAVER_SITE_VERIFICATION` : For Naver search advisor Plugin.
    - `NEXT_PUBLIC_UTTERANCES_REPO` : For Utterances Plugin.
+   - `NOTION_TOKEN` : For the built-in comments (see below).
+   - `NOTION_COMMENTS_DATABASE_ID` : For the built-in comments (see below).
+
+## Comments
+
+Each post has a built-in comment section. Commenters just type a name and a
+message — no account, no login. Comments are stored in a Notion database, so you
+can read and delete them from Notion like any other page.
+
+Toggle it with `comments.enable` in `site.config.js`.
+
+### Setup
+
+1. Create a new Notion database (a full-page one is easiest) with exactly these
+   three properties:
+
+   | Property  | Type      | Holds                       |
+   | --------- | --------- | --------------------------- |
+   | `Name`    | Title     | The commenter's name        |
+   | `Message` | Text      | The comment body            |
+   | `PostId`  | Text      | Which post it belongs to    |
+
+   The date shown on each comment is Notion's own "Created time" for the row, so
+   there's no property to add for it.
+
+2. Create an internal integration at
+   [notion.so/my-integrations](https://www.notion.so/my-integrations) with
+   **Read content** and **Insert content** capabilities, and copy its secret.
+
+3. Open the comments database in Notion → `•••` → **Connections** → add your
+   integration. Without this the API returns 404.
+
+4. Set the environment variables (in Vercel, and in `.env.local` for local dev):
+
+   - `NOTION_TOKEN` : the integration secret from step 2.
+   - `NOTION_COMMENTS_DATABASE_ID` : the 32-character id in the database URL —
+     `notion.so/<workspace>/<DATABASE_ID>?v=...`.
+
+Both are server-only and are never exposed to the browser.
 
 ## 10 Steps to build your own morethan-log (by 23.06.23)
 

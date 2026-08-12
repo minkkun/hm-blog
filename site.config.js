@@ -52,8 +52,13 @@ const CONFIG = {
       siteVerification: process.env.NEXT_PUBLIC_NAVER_SITE_VERIFICATION || "",
     },
   },
-  utterances: {
+  // built-in comments, stored in a Notion database
+  // requires NOTION_TOKEN and NOTION_COMMENTS_DATABASE_ID
+  comments: {
     enable: true,
+  },
+  utterances: {
+    enable: false,
     config: {
       repo: process.env.NEXT_PUBLIC_UTTERANCES_REPO || "",
       "issue-term": "og:title",

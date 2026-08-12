@@ -14,6 +14,12 @@ const CusdisComponent = dynamic(
   },
   { ssr: false }
 )
+const CommentsComponent = dynamic(
+  () => {
+    return import("./Comments")
+  },
+  { ssr: false }
+)
 
 type Props = {
   data: TPost
@@ -26,6 +32,7 @@ const CommentBox: React.FC<Props> = ({ data }) => {
       {CONFIG.cusdis.enable && (
         <CusdisComponent id={data.id} slug={data.slug} title={data.title} />
       )}
+      {CONFIG.comments.enable && <CommentsComponent postId={data.id} />}
     </div>
   )
 }
