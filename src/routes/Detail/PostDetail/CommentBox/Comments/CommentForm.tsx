@@ -6,6 +6,14 @@ type Props = {
   postId: string
 }
 
+/**
+ * Upper-case the first letter of each word, leaving the rest alone so names
+ * like "McDonald" or "JJ" survive intact. Mirrors the `text-transform` on the
+ * input, so what gets stored matches what was on screen while typing.
+ */
+const capitalize = (value: string) =>
+  value.replace(/(^|\s)(\S)/g, (_, space, letter) => space + letter.toUpperCase())
+
 const CommentForm: React.FC<Props> = ({ postId }) => {
   const [name, setName] = useState("")
   const [body, setBody] = useState("")
@@ -18,7 +26,7 @@ const CommentForm: React.FC<Props> = ({ postId }) => {
     if (!canSubmit) return
 
     mutate(
-      { name: name.trim(), body: body.trim() },
+      { name: capitalize(name.trim()), body: body.trim() },
       // Keep the name around so writing a second comment doesn't mean
       // typing it again.
       { onSuccess: () => setBody("") }
@@ -34,6 +42,8 @@ const CommentForm: React.FC<Props> = ({ postId }) => {
         onChange={(e) => setName(e.target.value)}
         placeholder="Your name"
         maxLength={60}
+        autoCapitalize="words"
+        autoComplete="name"
       />
       <textarea
         className="body"
@@ -81,6 +91,12 @@ const StyledWrapper = styled.form`
     background-color: transparent;
     font-size: 1.0625rem;
     font-weight: 700;
+    text-transform: capitalize;
+
+    /* ...but leave the placeholder as written. */
+    &::placeholder {
+      text-transform: none;
+    }
 
     :focus {
       border-color: ${({ theme }) => theme.colors.gray8};
