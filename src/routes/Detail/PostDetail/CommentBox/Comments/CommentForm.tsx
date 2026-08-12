@@ -62,19 +62,36 @@ const StyledWrapper = styled.form`
 
   .name,
   .body {
-    padding: 0.5rem 1rem;
-    border-radius: 1rem;
     outline-style: none;
     width: 100%;
     color: ${({ theme }) => theme.colors.gray12};
-    background-color: ${({ theme }) => theme.colors.gray4};
 
     ::placeholder {
       color: ${({ theme }) => theme.colors.gray10};
     }
   }
 
+  /* Outlined and narrow, so it reads as an identity field rather than as
+     more of the message. */
+  .name {
+    padding: 0.375rem 0.875rem;
+    max-width: 15rem;
+    border-radius: 999px;
+    border: 1px solid ${({ theme }) => theme.colors.gray6};
+    background-color: transparent;
+    font-size: 0.875rem;
+    font-weight: 600;
+
+    :focus {
+      border-color: ${({ theme }) => theme.colors.gray8};
+    }
+  }
+
+  /* Filled and full width — the main writing surface. */
   .body {
+    padding: 0.625rem 1rem;
+    border-radius: 1rem;
+    background-color: ${({ theme }) => theme.colors.gray4};
     resize: vertical;
     line-height: 1.5rem;
     font-family: inherit;
