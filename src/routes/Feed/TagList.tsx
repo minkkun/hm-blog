@@ -1,7 +1,6 @@
 import styled from "@emotion/styled"
 import { useRouter } from "next/router"
 import React from "react"
-import { Emoji } from "src/components/Emoji"
 import { useTagsQuery } from "src/hooks/useTagsQuery"
 
 type Props = {}
@@ -10,6 +9,15 @@ const TagList: React.FC<Props> = () => {
   const router = useRouter()
   const currentTag = router.query.tag || undefined
   const data = useTagsQuery()
+
+  const handleClickAllPosts = () => {
+    router.push({
+      query: {
+        ...router.query,
+        tag: undefined,
+      },
+    })
+  }
 
   const handleClickTag = (value: any) => {
     // delete
@@ -34,9 +42,14 @@ const TagList: React.FC<Props> = () => {
 
   return (
     <StyledWrapper>
-      <div className="top">
-        <Emoji>🏷️</Emoji> Tags
-      </div>
+      <a
+        className="nav-title all-posts"
+        data-active={!currentTag}
+        onClick={handleClickAllPosts}
+      >
+        All Posts
+      </a>
+      <div className="nav-title">Tags</div>
       <div className="list">
         {Object.keys(data).map((key) => (
           <a
@@ -55,13 +68,32 @@ const TagList: React.FC<Props> = () => {
 export default TagList
 
 const StyledWrapper = styled.div`
-  .top {
+  .nav-title {
     display: none;
-    padding: 0.25rem;
-    margin-bottom: 0.75rem;
+    padding: 0.25rem 0.5rem;
+    margin-bottom: 0.25rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 700;
+    color: ${({ theme }) => theme.colors.gray12};
 
     @media (min-width: 1024px) {
       display: block;
+    }
+  }
+
+  .all-posts {
+    border-radius: 0.75rem;
+    cursor: pointer;
+    color: ${({ theme }) => theme.colors.gray10};
+
+    :hover {
+      background-color: ${({ theme }) => theme.colors.gray4};
+    }
+
+    &[data-active="true"] {
+      color: ${({ theme }) => theme.colors.gray12};
+      background-color: ${({ theme }) => theme.colors.gray4};
     }
   }
 
@@ -87,6 +119,11 @@ const StyledWrapper = styled.div`
       padding: 0.25rem;
       padding-left: 1rem;
       padding-right: 1rem;
+
+      /* indent the tags under the "Tags" title (vertical layout only) */
+      @media (min-width: 1024px) {
+        padding-left: 1.5rem;
+      }
       margin-top: 0.25rem;
       margin-bottom: 0.25rem;
       border-radius: 0.75rem;
@@ -102,10 +139,6 @@ const StyledWrapper = styled.div`
       &[data-active="true"] {
         color: ${({ theme }) => theme.colors.gray12};
         background-color: ${({ theme }) => theme.colors.gray4};
-
-        :hover {
-          background-color: ${({ theme }) => theme.colors.gray4};
-        }
       }
     }
   }
