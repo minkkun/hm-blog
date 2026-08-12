@@ -1,9 +1,9 @@
 import { CONFIG } from "site.config"
-import { NotionAPI } from "notion-client"
 import { idToUuid } from "notion-utils"
 
 import getAllPageIds from "src/libs/utils/notion/getAllPageIds"
 import getPageProperties from "src/libs/utils/notion/getPageProperties"
+import { createNotionAPI } from "src/libs/notion-api"
 import { TPosts } from "src/types"
 
 /**
@@ -19,17 +19,9 @@ export const getPosts = async () => {
     return []
   }
   let id = configuredId as string
-  const api = new NotionAPI()
-
-  console.log("Configured ID:", id)
+  const api = createNotionAPI()
 
   const response = await api.getPage(id)
-
-  console.log("Response keys:", Object.keys(response))
-  console.log("Has collection:", !!response.collection)
-  console.log("Has collection_query:", !!response.collection_query)
-  console.log("Has collection_view:", !!response.collection_view)
-  console.log("Has block:", !!response.block)
 
   id = idToUuid(id)
   const collectionValue = Object.values(response.collection)[0]?.value as any
