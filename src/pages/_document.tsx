@@ -19,14 +19,15 @@ class MyDocument extends Document {
             href="/feed"
           ></link>
           {/* google search console */}
-          {CONFIG.googleSearchConsole.enable === true && (
-            <>
+          {/* Only emit the tag once there's a token: Google reads an empty
+              content="" as a failed verification rather than a missing one. */}
+          {CONFIG.googleSearchConsole.enable === true &&
+            !!CONFIG.googleSearchConsole.config.siteVerification && (
               <meta
                 name="google-site-verification"
                 content={CONFIG.googleSearchConsole.config.siteVerification}
               />
-            </>
-          )}
+            )}
           {/* naver search advisor */}
           {CONFIG.naverSearchAdvisor.enable === true && (
             <>
