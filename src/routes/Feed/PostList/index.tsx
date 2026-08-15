@@ -1,3 +1,4 @@
+import styled from "@emotion/styled"
 import { useRouter } from "next/router"
 import React, { useEffect, useState } from "react"
 import PostCard from "src/routes/Feed/PostList/PostCard"
@@ -51,17 +52,34 @@ const PostList: React.FC<Props> = ({ q }) => {
   }, [q, currentTag, currentCategory, currentOrder, setFilteredPosts])
 
   return (
-    <>
-      <div className="my-2">
-        {!filteredPosts.length && (
-          <p className="text-gray-500 dark:text-gray-300">Nothing! 😺</p>
-        )}
-        {filteredPosts.map((post) => (
-          <PostCard key={post.id} data={post} />
-        ))}
-      </div>
-    </>
+    <StyledGrid>
+      {!filteredPosts.length && <p className="empty">Nothing here yet</p>}
+      {filteredPosts.map((post, index) => (
+        <PostCard key={post.id} data={post} index={index} />
+      ))}
+    </StyledGrid>
   )
 }
 
 export default PostList
+
+const StyledGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr;
+  /* top-align each row so the staggered cover heights read as intentional */
+  align-items: start;
+  column-gap: 3.75rem;
+
+  @media (min-width: 768px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  > .empty {
+    grid-column: 1 / -1;
+    font-family: var(--font-label);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: ${({ theme }) => theme.colors.gray10};
+  }
+`

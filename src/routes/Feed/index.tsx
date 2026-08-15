@@ -1,58 +1,25 @@
-import { useState } from "react"
-
-import SearchInput from "./SearchInput"
-import { FeedHeader } from "./FeedHeader"
-import Footer from "./Footer"
+import { useRouter } from "next/router"
 import styled from "@emotion/styled"
-import TagList from "./TagList"
-import MobileProfileCard from "./MobileProfileCard"
-import ProfileCard from "./ProfileCard"
-import ServiceCard from "./ServiceCard"
-import ContactCard from "./ContactCard"
-import PostList from "./PostList"
-import PinnedPosts from "./PostList/PinnedPosts"
 
-const HEADER_HEIGHT = 73
+import PostList from "./PostList"
+import SideNav from "./SideNav"
+
+const RAIL_WIDTH = "12.5rem"
 
 type Props = {}
 
 const Feed: React.FC<Props> = () => {
-  const [q, setQ] = useState("")
+  const router = useRouter()
+  const currentTag = `${router.query.tag || ``}` || undefined
 
   return (
     <StyledWrapper>
-      <div
-        className="lt"
-        css={{
-          height: `calc(100vh - ${HEADER_HEIGHT}px)`,
-        }}
-      >
-        <TagList />
-      </div>
-      <div className="mid">
-        <MobileProfileCard />
-        <PinnedPosts q={q} />
-        <SearchInput value={q} onChange={(e) => setQ(e.target.value)} />
-        <div className="tags">
-          <TagList />
-        </div>
-        <FeedHeader />
-        <PostList q={q} />
-        <div className="footer">
-          <Footer />
-        </div>
-      </div>
-      <div
-        className="rt"
-        css={{
-          height: `calc(100vh - ${HEADER_HEIGHT}px)`,
-        }}
-      >
-        <ProfileCard />
-        <ContactCard />
-        <div className="footer">
-          <Footer />
-        </div>
+      {/* On mobile the rail collapses into a scrolling strip above the grid;
+          on desktop it is fixed to the right edge, so DOM order is moot. */}
+      <SideNav />
+      <div className="content">
+        <h1 className="page-title">{currentTag || "Posts"}</h1>
+        <PostList q="" />
       </div>
     </StyledWrapper>
   )
@@ -61,77 +28,27 @@ const Feed: React.FC<Props> = () => {
 export default Feed
 
 const StyledWrapper = styled.div`
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-
-  padding: 2rem 0;
-  display: grid;
-  gap: 1.5rem;
-
-  @media (max-width: 768px) {
-    display: block;
-    padding: 0.5rem 0;
-  }
-
-  > .lt {
-    display: none;
-    overflow: scroll;
-    position: sticky;
-    grid-column: span 2 / span 2;
-    top: ${HEADER_HEIGHT - 10}px;
-
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    &::-webkit-scrollbar {
-      display: none;
-    }
+  > .content {
+    padding: 1.5rem 1.25rem 4rem;
 
     @media (min-width: 1024px) {
-      display: block;
-    }
-  }
-
-  > .mid {
-    grid-column: span 12 / span 12;
-
-    @media (min-width: 1024px) {
-      grid-column: span 7 / span 7;
+      /* clear the fixed rail on the right and the floating wordmark above */
+      padding: 9rem 4rem 8rem 7vw;
+      margin-right: ${RAIL_WIDTH};
     }
 
-    > .tags {
-      display: block;
+    > .page-title {
+      margin-bottom: 4.5rem;
+      font-family: var(--font-label);
+      font-size: 0.9375rem;
+      font-weight: 500;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: ${({ theme }) => theme.colors.gray12};
 
       @media (min-width: 1024px) {
-        display: none;
+        margin-bottom: 5.5rem;
       }
-    }
-
-    > .footer {
-      padding-bottom: 2rem;
-      @media (min-width: 1024px) {
-        display: none;
-      }
-    }
-  }
-
-  > .rt {
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    &::-webkit-scrollbar {
-      display: none;
-    }
-
-    display: none;
-    overflow: scroll;
-    position: sticky;
-    top: ${HEADER_HEIGHT - 10}px;
-
-    @media (min-width: 1024px) {
-      display: block;
-      grid-column: span 3 / span 3;
-    }
-
-    .footer {
-      padding-top: 1rem;
     }
   }
 `

@@ -18,7 +18,7 @@ const CONFIG = {
   blog: {
     title: "kun place of mink",
     description: "a piece of hien minh",
-    scheme: "dark", // 'light' | 'dark' | 'system'
+    scheme: "light", // 'light' | 'dark' | 'system'
   },
 
   // CONFIG configration (required)

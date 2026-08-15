@@ -6,17 +6,21 @@ import { zIndexes } from "src/styles/zIndexes"
 
 type Props = {
   fullWidth: boolean
+  /** On the feed the right-hand rail carries the nav, so the bar shows only the wordmark. */
+  bare?: boolean
 }
 
-const Header: React.FC<Props> = ({ fullWidth }) => {
+const Header: React.FC<Props> = ({ fullWidth, bare = false }) => {
   return (
-    <StyledWrapper>
+    <StyledWrapper data-full-width={fullWidth}>
       <div data-full-width={fullWidth} className="container">
         <Logo />
-        <div className="nav">
-          <ThemeToggle />
-          <NavBar />
-        </div>
+        {!bare && (
+          <div className="nav">
+            <ThemeToggle />
+            <NavBar />
+          </div>
+        )}
       </div>
     </StyledWrapper>
   )
@@ -29,7 +33,13 @@ const StyledWrapper = styled.div`
   position: sticky;
   top: 0;
   background-color: ${({ theme }) => theme.colors.gray2};
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+
+  /* On the feed the wordmark simply sits at the top of the page and scrolls
+     away with it — a sticky opaque bar would paint over the fixed nav rail. */
+  &[data-full-width="true"] {
+    position: static;
+    background-color: transparent;
+  }
 
   .container {
     display: flex;
@@ -39,17 +49,23 @@ const StyledWrapper = styled.div`
     align-items: center;
     width: 100%;
     max-width: 1120px;
-    height: 3rem;
+    height: 3.25rem;
     margin: 0 auto;
+
     &[data-full-width="true"] {
+      max-width: none;
+      margin: 0;
+
       @media (min-width: 768px) {
-        padding-left: 6rem;
-        padding-right: 6rem;
+        padding-left: 1.75rem;
+        padding-right: 1.75rem;
+        height: 4.5rem;
       }
     }
+
     .nav {
       display: flex;
-      gap: 0.75rem;
+      gap: 1rem;
       align-items: center;
     }
   }

@@ -26,7 +26,15 @@ const StyledWrapper = styled.div`
     li {
       display: block;
       margin-left: 1rem;
+      font-family: var(--font-label);
+      font-size: 0.6875rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
       color: ${({ theme }) => theme.colors.gray11};
+
+      :hover {
+        color: ${({ theme }) => theme.colors.gray12};
+      }
     }
   }
 `

@@ -1,4 +1,5 @@
 import React, { ReactNode, useEffect } from "react"
+import { useRouter } from "next/router"
 import { ThemeProvider } from "./ThemeProvider"
 import useScheme from "src/hooks/useScheme"
 import Header from "./Header"
@@ -47,21 +48,26 @@ type Props = {
 
 const RootLayout = ({ children }: Props) => {
   const [scheme] = useScheme()
+  const router = useRouter()
   useGtagEffect()
   useEffect(() => {
     Prism.highlightAll();
   }, []);
+
+  // The feed is a full-bleed gallery; every other route keeps the centred column.
+  const isFeed = router.pathname === "/"
 
   return (
     <ThemeProvider scheme={scheme}>
       <Scripts />
       {/* // TODO: replace react query */}
       {/* {metaConfig.type !== "Paper" && <Header />} */}
-  <Header fullWidth={false} />
-  <StyledMain>{children}</StyledMain>
-  <SnowEffect />
+  <Header fullWidth={isFeed} bare={isFeed} />
+  <StyledMain data-full-width={isFeed}>{children}</StyledMain>
+  {/* The gallery front page is deliberately still; snow only on the other routes. */}
+  {!isFeed && <SnowEffect />}
     </ThemeProvider>
-    
+
   )
 }
 
@@ -74,4 +80,9 @@ const StyledMain = styled.main`
   padding: 0 1rem;
   position: relative;
   z-index: 1; /* ensure main content (inputs/text) renders above the snow canvas */
+
+  &[data-full-width="true"] {
+    max-width: none;
+    padding: 0;
+  }
 `
