@@ -121,7 +121,7 @@ const StyledWrapper = styled.aside`
     width: 12.5rem;
     padding: 1.875rem 1.75rem 2.5rem 1.5rem;
     text-align: right;
-    background-color: ${({ theme }) => theme.colors.gray2};
+    background-color: ${({ theme }) => theme.colors.paper};
     border-left: 1px solid ${({ theme }) => theme.colors.gray6};
 
     > .nav {

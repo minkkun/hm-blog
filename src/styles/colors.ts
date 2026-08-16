@@ -20,6 +20,9 @@ export const colors = {
     ...blue,
     ...red,
     ...green,
+    // The ground the whole site sits on — Pantone 11-0608 TCX, Coconut Milk.
+    // Warmer than the Radix grays, which stay for text and borders.
+    paper: "#F1EEE6",
   },
   dark: {
     ...indigoDark,
@@ -27,5 +30,6 @@ export const colors = {
     ...blueDark,
     ...redDark,
     ...greenDark,
+    paper: grayDark.gray2,
   },
 }

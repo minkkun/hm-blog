@@ -32,7 +32,7 @@ const StyledWrapper = styled.div`
   z-index: ${zIndexes.header};
   position: sticky;
   top: 0;
-  background-color: ${({ theme }) => theme.colors.gray2};
+  background-color: ${({ theme }) => theme.colors.paper};
 
   /* On the feed the wordmark simply sits at the top of the page and scrolls
      away with it — a sticky opaque bar would paint over the fixed nav rail. */
