@@ -1,6 +1,7 @@
 import styled from "@emotion/styled"
 import { useRouter } from "next/router"
 import React from "react"
+import { isSerifTag } from "src/constants"
 
 type Props = {
   children: string
@@ -13,7 +14,10 @@ const Tag: React.FC<Props> = ({ children }) => {
     router.push(`/?tag=${value}`)
   }
   return (
-    <StyledWrapper onClick={() => handleClick(children)}>
+    <StyledWrapper
+      data-serif={isSerifTag(children)}
+      onClick={() => handleClick(children)}
+    >
       {children}
     </StyledWrapper>
   )
@@ -33,4 +37,10 @@ const StyledWrapper = styled.div`
   color: ${({ theme }) => theme.colors.gray10};
   background-color: ${({ theme }) => theme.colors.gray5};
   cursor: pointer;
+
+  /* Bookish tags are set in the reading serif rather than the label mono. */
+  &[data-serif="true"] {
+    font-family: var(--font-prose);
+    font-size: 0.8125rem;
+  }
 `

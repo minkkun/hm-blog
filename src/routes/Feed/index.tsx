@@ -26,7 +26,9 @@ export default Feed
 
 const StyledWrapper = styled.div`
   > .content {
-    padding: 1.5rem 1.25rem 4rem;
+    /* Clears the nav strip above it, with room for the tag list to drop
+       open underneath the heading without crowding it. */
+    padding: 3.5rem 1.25rem 4rem;
 
     @media (min-width: 1024px) {
       /* clear the fixed rail on the right and the floating wordmark above */
