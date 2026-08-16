@@ -4,7 +4,6 @@ import { useRouter } from "next/router"
 import React from "react"
 import { CONFIG } from "site.config"
 import useScheme from "src/hooks/useScheme"
-import { useTagsQuery } from "src/hooks/useTagsQuery"
 
 const year = new Date().getFullYear()
 const from = +CONFIG.since
@@ -14,32 +13,22 @@ type Props = {}
 const SideNav: React.FC<Props> = () => {
   const router = useRouter()
   const [scheme, setScheme] = useScheme()
-  const tags = useTagsQuery()
   const currentTag = router.query.tag || undefined
 
-  // Tag filters map onto real URLs, so they are links rather than buttons —
-  // shareable and middle-clickable. Clicking the active tag clears the filter.
-  const tagHref = (value?: string) => {
+  // Tag filtering now lives in the flyout beside the "Posts" heading; "All"
+  // here just clears whatever tag is applied.
+  const allHref = () => {
     const { tag, ...rest } = router.query
-    return { query: value ? { ...rest, tag: value } : rest }
+    return { query: rest }
   }
 
   return (
     <StyledWrapper>
       <nav className="nav">
-        <Link href={tagHref(undefined)} data-active={!currentTag} scroll={false}>
+        <Link href={allHref()} data-active={!currentTag} scroll={false}>
           All
         </Link>
-        {Object.keys(tags).map((tag) => (
-          <Link
-            key={tag}
-            href={tagHref(tag === currentTag ? undefined : tag)}
-            data-active={tag === currentTag}
-            scroll={false}
-          >
-            {tag}
-          </Link>
-        ))}
+        <Link href="/gallery">Gallery</Link>
         <Link href="/about">About</Link>
       </nav>
 
