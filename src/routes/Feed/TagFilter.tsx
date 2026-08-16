@@ -2,6 +2,7 @@ import styled from "@emotion/styled"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import React, { useEffect, useRef, useState } from "react"
+import { isSerifTag } from "src/constants"
 import { useTagsQuery } from "src/hooks/useTagsQuery"
 
 type Props = {}
@@ -64,7 +65,11 @@ const TagFilter: React.FC<Props> = () => {
       </button>
 
       {/* Turned right, the arrow reads as the separator: POSTS > SCI-FI */}
-      {currentTag && <span className="current">{currentTag}</span>}
+      {currentTag && (
+        <span className="current" data-serif={isSerifTag(currentTag)}>
+          {currentTag}
+        </span>
+      )}
 
       {/* Flies out to the right, in the direction the arrow turns to point. */}
       <div className="flyout" data-open={open}>
@@ -73,6 +78,7 @@ const TagFilter: React.FC<Props> = () => {
             key={tag}
             href={tagHref(tag === currentTag ? undefined : tag)}
             data-active={tag === currentTag}
+            data-serif={isSerifTag(tag)}
             scroll={false}
             onClick={() => setOpen(false)}
           >
@@ -113,6 +119,12 @@ const StyledWrapper = styled.div`
   /* The tag sits a shade back from its parent crumb. */
   > .current {
     color: ${({ theme }) => theme.colors.gray11};
+
+    /* Bookish tags read in the prose serif rather than the label mono. */
+    &[data-serif="true"] {
+      font-family: var(--font-prose);
+      letter-spacing: 0.08em;
+    }
   }
 
   > .trigger {
@@ -146,22 +158,42 @@ const StyledWrapper = styled.div`
 
   > .flyout {
     position: absolute;
-    left: 100%;
-    top: 50%;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    margin-left: 1.25rem;
-    transform: translate(-0.5rem, -50%);
     visibility: hidden;
     opacity: 0;
     transition: opacity 220ms ease, transform 220ms cubic-bezier(0.4, 0, 0.2, 1),
       visibility 220ms;
 
+    /* On a phone there is no room to the right, so it drops below instead —
+       over the grid, which means it needs its own ground to stay readable. */
+    left: 0;
+    top: 100%;
+    z-index: 5;
+    margin-top: 0.75rem;
+    padding: 0.75rem 1.5rem 0.75rem 0;
+    background-color: ${({ theme }) => theme.colors.paper};
+    transform: translateY(-0.5rem);
+
+    @media (min-width: 768px) {
+      left: 100%;
+      top: 50%;
+      margin-top: 0;
+      margin-left: 1.25rem;
+      padding: 0;
+      background: none;
+      transform: translate(-0.5rem, -50%);
+    }
+
     &[data-open="true"] {
       visibility: visible;
       opacity: 1;
-      transform: translate(0, -50%);
+      transform: translateY(0);
+
+      @media (min-width: 768px) {
+        transform: translate(0, -50%);
+      }
     }
 
     a {
@@ -173,6 +205,13 @@ const StyledWrapper = styled.div`
       white-space: nowrap;
       color: ${({ theme }) => theme.colors.gray11};
       transition: color 200ms ease;
+
+      /* Bookish tags read in the prose serif rather than the label mono. */
+      &[data-serif="true"] {
+        font-family: var(--font-prose);
+        font-size: 0.8125rem;
+        letter-spacing: 0.08em;
+      }
 
       &[data-active="true"] {
         color: ${({ theme }) => theme.colors.gray12};
