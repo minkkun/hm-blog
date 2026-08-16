@@ -1,3 +1,5 @@
 export * from './pretendard'
 export * from './wordmark'
 export * from './martianMono'
+export * from './lora'
+export * from './imFellEnglish'

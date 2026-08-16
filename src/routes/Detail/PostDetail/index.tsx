@@ -58,5 +58,8 @@ const StyledWrapper = styled.div`
   > article {
     margin: 0 auto;
     max-width: 42rem;
+    /* react-notion-x sets its body copy from this variable, so overriding it
+       here re-faces the article without touching code blocks. */
+    --notion-font: var(--font-prose);
   }
 `

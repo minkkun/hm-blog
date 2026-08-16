@@ -1,7 +1,13 @@
 import { Global as _Global, css, useTheme } from "@emotion/react"
 
 import { ThemeProvider as _ThemeProvider } from "@emotion/react"
-import { martianMono, pretendard, wordmark } from "src/assets"
+import {
+  imFellEnglish,
+  lora,
+  martianMono,
+  pretendard,
+  wordmark,
+} from "src/assets"
 
 export const Global = () => {
   const theme = useTheme()
@@ -16,6 +22,10 @@ export const Global = () => {
           --font-wordmark: ${wordmark.style.fontFamily};
           /* tracked-uppercase labels — nav, titles, captions, dates */
           --font-label: ${martianMono.style.fontFamily};
+          /* reading serif — blog post titles and body copy */
+          --font-prose: ${lora.style.fontFamily};
+          /* letterpress serif — standalone pages such as About */
+          --font-page: ${imFellEnglish.style.fontFamily};
         }
 
         body {

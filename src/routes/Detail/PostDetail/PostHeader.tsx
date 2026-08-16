@@ -68,6 +68,8 @@ export default PostHeader
 
 const StyledWrapper = styled.div`
   .title {
+    /* Set with the body copy it introduces, not the UI around it. */
+    font-family: var(--font-prose);
     font-size: 1.875rem;
     line-height: 2.25rem;
     font-weight: 700;
