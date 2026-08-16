@@ -1,3 +1,3 @@
 export * from './pretendard'
-export * from './archivo'
+export * from './wordmark'
 export * from './martianMono'

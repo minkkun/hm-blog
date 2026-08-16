@@ -1,7 +1,7 @@
 import { Global as _Global, css, useTheme } from "@emotion/react"
 
 import { ThemeProvider as _ThemeProvider } from "@emotion/react"
-import { archivo, martianMono, pretendard } from "src/assets"
+import { martianMono, pretendard, wordmark } from "src/assets"
 
 export const Global = () => {
   const theme = useTheme()
@@ -12,8 +12,8 @@ export const Global = () => {
         :root {
           /* reading text — long-form prose */
           --font-body: ${pretendard.style.fontFamily};
-          /* display grotesque — wordmark, large headings */
-          --font-display: ${archivo.style.fontFamily};
+          /* handwriting — the wordmark only */
+          --font-wordmark: ${wordmark.style.fontFamily};
           /* tracked-uppercase labels — nav, titles, captions, dates */
           --font-label: ${martianMono.style.fontFamily};
         }
