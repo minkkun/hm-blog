@@ -68,7 +68,9 @@ const StyledGrid = styled.div`
   grid-template-columns: 1fr;
   /* top-align each row so the staggered cover heights read as intentional */
   align-items: start;
-  column-gap: 3.75rem;
+  /* The columns sit close because each cover drifts inside its own, which is
+     what opens the channel between them — and varies it row to row. */
+  column-gap: 2.5rem;
 
   @media (min-width: 768px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));

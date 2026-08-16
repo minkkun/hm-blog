@@ -34,7 +34,7 @@ const StyledWrapper = styled.div`
       /* clear the fixed rail on the right and the floating wordmark above.
          The side margins stay tight so the covers, not the whitespace, are
          what the page is mostly made of. */
-      padding: 9rem 2rem 8rem 4vw;
+      padding: 9rem 1.5rem 8rem 3vw;
       margin-right: ${RAIL_WIDTH};
     }
   }
