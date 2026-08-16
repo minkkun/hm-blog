@@ -29,8 +29,10 @@ const StyledWrapper = styled.div`
     padding: 1.5rem 1.25rem 4rem;
 
     @media (min-width: 1024px) {
-      /* clear the fixed rail on the right and the floating wordmark above */
-      padding: 9rem 4rem 8rem 7vw;
+      /* clear the fixed rail on the right and the floating wordmark above.
+         The side margins stay tight so the covers, not the whitespace, are
+         what the page is mostly made of. */
+      padding: 9rem 2rem 8rem 4vw;
       margin-right: ${RAIL_WIDTH};
     }
   }
