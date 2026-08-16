@@ -39,11 +39,21 @@ const TagFilter: React.FC<Props> = () => {
 
   return (
     <StyledWrapper ref={wrapperRef}>
-      <h1 className="title">Posts</h1>
+      <h1 className="title">
+        {/* Once filtered the heading is the way back to every post. */}
+        {currentTag ? (
+          <Link href={tagHref(undefined)} scroll={false}>
+            Posts
+          </Link>
+        ) : (
+          "Posts"
+        )}
+      </h1>
 
       <button
         className="trigger"
         data-open={open}
+        data-filtered={!!currentTag}
         aria-expanded={open}
         aria-label="Filter posts by tag"
         onClick={() => setOpen((prev) => !prev)}
@@ -52,6 +62,9 @@ const TagFilter: React.FC<Props> = () => {
           <path d="M0 0 L10 0 L5 6 Z" fill="currentColor" />
         </svg>
       </button>
+
+      {/* Turned right, the arrow reads as the separator: POSTS > SCI-FI */}
+      {currentTag && <span className="current">{currentTag}</span>}
 
       {/* Flies out to the right, in the direction the arrow turns to point. */}
       <div className="flyout" data-open={open}>
@@ -87,13 +100,19 @@ const StyledWrapper = styled.div`
     margin-bottom: 5.5rem;
   }
 
-  > .title {
+  > .title,
+  > .current {
     font-family: var(--font-label);
     font-size: 0.9375rem;
     font-weight: 500;
     letter-spacing: 0.16em;
     text-transform: uppercase;
     color: ${({ theme }) => theme.colors.gray12};
+  }
+
+  /* The tag sits a shade back from its parent crumb. */
+  > .current {
+    color: ${({ theme }) => theme.colors.gray11};
   }
 
   > .trigger {
@@ -112,12 +131,15 @@ const StyledWrapper = styled.div`
       transition: transform 250ms cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    /* Points down at rest; swings round to aim at the flyout it opens. */
+    /* Points down at rest; swings round to aim at the flyout it opens — and
+       stays turned while a tag is applied, where it reads as a ">" crumb. */
     :hover svg,
-    &[data-open="true"] svg {
+    &[data-open="true"] svg,
+    &[data-filtered="true"] svg {
       transform: rotate(-90deg);
     }
-    &[data-open="true"] {
+    &[data-open="true"],
+    &[data-filtered="true"] {
       color: ${({ theme }) => theme.colors.gray12};
     }
   }
