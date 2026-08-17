@@ -8,9 +8,17 @@ type Props = {
   index?: number
 }
 
-// Covers keep a varied rhythm down the page rather than a rigid grid: each
-// row's images top-align, so differing heights stagger the captions below.
-const RATIOS = [70, 60, 62, 74]
+/**
+ * Covers keep a varied rhythm down the page rather than a rigid grid: each
+ * row's images top-align, so differing heights stagger the captions below.
+ *
+ * The count must stay ODD. Index parity decides which column a cover lands
+ * in, so an even-length table hands each column only half its values — at
+ * four entries every column alternated between exactly two heights and the
+ * page visibly zigzagged. Five is coprime with both the two columns and the
+ * seven drift entries, so each column cycles through all five.
+ */
+const RATIOS = [70, 60, 62, 74, 66]
 
 /**
  * Each cover is nudged off its column so no two rows line up. `x` is a share
@@ -18,7 +26,7 @@ const RATIOS = [70, 60, 62, 74]
  *
  * Deterministic on purpose — a real random number would differ between the
  * server render and the browser's, and React would tear on hydration. Seven
- * entries against four aspect ratios means the pair only repeats every 28
+ * entries against five aspect ratios means the pair only repeats every 35
  * cards, which reads as scattered rather than patterned.
  */
 const DRIFT = [
