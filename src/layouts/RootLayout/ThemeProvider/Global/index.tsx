@@ -2,6 +2,7 @@ import { Global as _Global, css, useTheme } from "@emotion/react"
 
 import { ThemeProvider as _ThemeProvider } from "@emotion/react"
 import {
+  dmSans,
   imFellEnglish,
   lora,
   martianMono,
@@ -26,6 +27,8 @@ export const Global = () => {
           --font-prose: ${lora.style.fontFamily};
           /* letterpress serif — standalone pages such as About */
           --font-page: ${imFellEnglish.style.fontFamily};
+          /* the comment section */
+          --font-comment: ${dmSans.style.fontFamily};
         }
 
         body {

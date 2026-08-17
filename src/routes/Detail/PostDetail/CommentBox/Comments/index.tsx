@@ -35,6 +35,10 @@ const StyledWrapper = styled.div`
   padding-top: 2rem;
   border-top: 1px solid ${({ theme }) => theme.colors.gray5};
 
+  /* Covers the heading, the form and every comment: the inputs and buttons
+     are reset with \`all: unset\` globally, so they inherit this too. */
+  font-family: var(--font-comment);
+
   > .title {
     margin-bottom: 1rem;
     font-size: 1.25rem;
