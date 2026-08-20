@@ -2,7 +2,7 @@ import { Global as _Global, css, useTheme } from "@emotion/react"
 
 import { ThemeProvider as _ThemeProvider } from "@emotion/react"
 import {
-  dmSans,
+  beVietnamPro,
   imFellEnglish,
   lora,
   martianMono,
@@ -28,7 +28,7 @@ export const Global = () => {
           /* letterpress serif — standalone pages such as About */
           --font-page: ${imFellEnglish.style.fontFamily};
           /* the comment section */
-          --font-comment: ${dmSans.style.fontFamily};
+          --font-comment: ${beVietnamPro.style.fontFamily};
         }
 
         body {
