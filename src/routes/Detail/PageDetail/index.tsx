@@ -24,4 +24,23 @@ const StyledWrapper = styled.div`
      here re-faces the rendered page without touching code blocks. */
   --notion-font: var(--font-page);
   font-family: var(--font-page);
+
+  /* A standalone page is one short statement, so it sits on the middle of
+     both axes rather than hanging from the top of the window. The height is
+     what is left of the viewport once the header and the page padding are
+     taken out, so the block centres against what the reader actually sees. */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 12rem);
+  text-align: center;
+
+  /* react-notion-x stacks its blocks flush left; centre them to match. */
+  .notion-page,
+  .notion-page-content,
+  .notion-page-content-inner {
+    width: 100%;
+    align-items: center;
+  }
 `
