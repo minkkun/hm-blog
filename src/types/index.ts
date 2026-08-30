@@ -23,6 +23,11 @@ export type TPost = {
   tags?: string[]
   category?: string[]
   summary?: string
+  /**
+   * The long note behind a gallery entry. Only the dialog shows it; the tile
+   * carries `summary` alone. Comes from a Notion property named `description`.
+   */
+  description?: string
   author?: {
     id: string
     name: string

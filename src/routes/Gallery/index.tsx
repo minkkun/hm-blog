@@ -119,8 +119,8 @@ const StyledWrapper = styled.div`
     > .grid {
       display: grid;
       grid-template-columns: 1fr;
-      border-top: 1px solid ${({ theme }) => theme.colors.gray6};
-      border-left: 1px solid ${({ theme }) => theme.colors.gray6};
+      border-top: 1px solid ${({ theme }) => theme.colors.line};
+      border-left: 1px solid ${({ theme }) => theme.colors.line};
 
       @media (min-width: 768px) {
         grid-template-columns: repeat(2, minmax(0, 1fr));
