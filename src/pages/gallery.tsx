@@ -12,9 +12,11 @@ import { NextPageWithLayout } from "src/types"
 
 export const getStaticProps: GetStaticProps = async () => {
   // The feed's cache is filtered to posts, so the gallery fetches its own.
+  // Entries open in a dialog rather than a page, so a slug is not required.
   const items = filterPosts(await getPosts(), {
     acceptStatus: ["Public"],
     acceptType: ["Gallery"],
+    requireSlug: false,
   })
   await queryClient.prefetchQuery(queryKey.gallery(), () => items)
 

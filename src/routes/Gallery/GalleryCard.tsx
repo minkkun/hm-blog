@@ -1,26 +1,23 @@
-import Link from "next/link"
 import Image from "next/image"
 import styled from "@emotion/styled"
 import { TPost } from "src/types"
+import { shortDate } from "./shortDate"
 
 type Props = {
   data: TPost
+  onOpen: () => void
 }
 
-/** Short form to sit opposite the category, as in `4.10`. */
-const shortDate = (value?: string) => {
-  if (!value) return ""
-  const d = new Date(value)
-  if (Number.isNaN(d.getTime())) return ""
-  return `${d.getMonth() + 1}.${`${d.getDate()}`.padStart(2, "0")}`
-}
-
-const GalleryCard: React.FC<Props> = ({ data }) => {
+/**
+ * A tile on the wall. It carries only what reads at a glance — cover, name,
+ * category and date; the note behind it belongs to the dialog this opens.
+ */
+const GalleryCard: React.FC<Props> = ({ data, onOpen }) => {
   const category = (data.category && data.category[0]) || undefined
   const date = shortDate(data.date?.start_date || data.createdTime)
 
   return (
-    <StyledWrapper href={`/${data.slug}`}>
+    <StyledWrapper type="button" onClick={onOpen} aria-haspopup="dialog">
       <div className="cover">
         {data.thumbnail ? (
           <Image
@@ -37,7 +34,6 @@ const GalleryCard: React.FC<Props> = ({ data }) => {
 
       <div className="panel">
         <h2 className="title">{data.title}</h2>
-        {data.summary && <p className="summary">{data.summary}</p>}
         <div className="meta">
           <span>{category}</span>
           <span>{date}</span>
@@ -49,7 +45,16 @@ const GalleryCard: React.FC<Props> = ({ data }) => {
 
 export default GalleryCard
 
-const StyledWrapper = styled(Link)`
+const StyledWrapper = styled.button`
+  /* The global reset hands <button> its native appearance back; flatten it. */
+  -webkit-appearance: none;
+  appearance: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+
   display: flex;
   flex-direction: column;
   /* Only the right and bottom edges are drawn here; the grid supplies its own
@@ -84,25 +89,12 @@ const StyledWrapper = styled(Link)`
     padding: 1.25rem 1.25rem 1rem;
 
     > .title {
-      margin-bottom: 0.625rem;
+      margin: 0 0 1.5rem;
       font-family: var(--font-prose);
       font-size: 1.3125rem;
       font-weight: 700;
       line-height: 1.2;
       color: ${({ theme }) => theme.colors.gray12};
-    }
-
-    > .summary {
-      margin: 0 0 1.5rem;
-      font-family: var(--font-sans);
-      font-size: 0.8125rem;
-      line-height: 1.55;
-      color: ${({ theme }) => theme.colors.gray11};
-      /* Clamped so a long note cannot make one card tower over its row. */
-      display: -webkit-box;
-      -webkit-line-clamp: 3;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
     }
 
     > .meta {
@@ -119,7 +111,8 @@ const StyledWrapper = styled(Link)`
     }
   }
 
-  :hover {
+  :hover,
+  :focus-visible {
     > .cover img {
       opacity: 0.72;
     }

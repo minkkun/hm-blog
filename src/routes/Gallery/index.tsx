@@ -1,9 +1,11 @@
 import styled from "@emotion/styled"
 import Link from "next/link"
+import React, { useState } from "react"
 import { CONFIG } from "site.config"
 
 import SideNav from "../Feed/SideNav"
 import GalleryCard from "./GalleryCard"
+import GalleryModal from "./GalleryModal"
 import useGalleryQuery from "src/hooks/useGalleryQuery"
 import {
   RAIL_PADDING_DESKTOP,
@@ -15,6 +17,9 @@ type Props = {}
 
 const Gallery: React.FC<Props> = () => {
   const items = useGalleryQuery()
+  // Held by id rather than by object, so the open entry survives a refetch.
+  const [openId, setOpenId] = useState<string | null>(null)
+  const open = items.find((item) => item.id === openId)
   const note = (CONFIG as any).gallery as
     | { note?: string; linkText?: string; href?: string }
     | undefined
@@ -34,13 +39,19 @@ const Gallery: React.FC<Props> = () => {
         {items.length ? (
           <div className="grid">
             {items.map((item) => (
-              <GalleryCard key={item.id} data={item} />
+              <GalleryCard
+                key={item.id}
+                data={item}
+                onOpen={() => setOpenId(item.id)}
+              />
             ))}
           </div>
         ) : (
           <p className="empty">Nothing here yet</p>
         )}
       </div>
+
+      {open && <GalleryModal data={open} onClose={() => setOpenId(null)} />}
     </StyledWrapper>
   )
 }
