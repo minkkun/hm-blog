@@ -27,8 +27,8 @@ export const Global = () => {
           --font-prose: ${lora.style.fontFamily};
           /* letterpress serif — standalone pages such as About */
           --font-page: ${imFellEnglish.style.fontFamily};
-          /* the comment section */
-          --font-comment: ${beVietnamPro.style.fontFamily};
+          /* general-purpose sans with Vietnamese — comments, gallery notes */
+          --font-sans: ${beVietnamPro.style.fontFamily};
         }
 
         body {

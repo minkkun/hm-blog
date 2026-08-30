@@ -37,7 +37,7 @@ const StyledWrapper = styled.div`
 
   /* Covers the heading, the form and every comment: the inputs and buttons
      are reset with \`all: unset\` globally, so they inherit this too. */
-  font-family: var(--font-comment);
+  font-family: var(--font-sans);
 
   > .title {
     margin-bottom: 1rem;

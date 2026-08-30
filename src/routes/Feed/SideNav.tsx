@@ -17,18 +17,26 @@ const SideNav: React.FC<Props> = () => {
 
   // Tag filtering now lives in the flyout beside the "Posts" heading; "All"
   // here just clears whatever tag is applied.
+  // Names the pathname explicitly: a query-only href keeps whatever page you
+  // are on, which would strand "All" on the gallery instead of the feed.
   const allHref = () => {
     const { tag, ...rest } = router.query
-    return { query: rest }
+    return { pathname: "/", query: rest }
   }
 
   return (
     <StyledWrapper>
       <nav className="nav">
-        <Link href={allHref()} data-active={!currentTag} scroll={false}>
+        <Link
+          href={allHref()}
+          data-active={router.pathname === "/" && !currentTag}
+          scroll={false}
+        >
           All
         </Link>
-        <Link href="/gallery">Gallery</Link>
+        <Link href="/gallery" data-active={router.pathname === "/gallery"}>
+          Gallery
+        </Link>
         <Link href="/about">About</Link>
       </nav>
 

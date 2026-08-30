@@ -14,7 +14,7 @@ import { FilterPostsOptions } from "src/libs/utils/notion/filterPosts"
 
 const filter: FilterPostsOptions = {
   acceptStatus: ["Public", "PublicOnDetail"],
-  acceptType: ["Paper", "Post", "Page"],
+  acceptType: ["Paper", "Post", "Page", "Gallery"],
 }
 
 export const getStaticPaths = async () => {

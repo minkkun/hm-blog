@@ -3,8 +3,11 @@ import styled from "@emotion/styled"
 import PostList from "./PostList"
 import SideNav from "./SideNav"
 import TagFilter from "./TagFilter"
-
-const RAIL_WIDTH = "12.5rem"
+import {
+  RAIL_PADDING_DESKTOP,
+  RAIL_PADDING_MOBILE,
+  RAIL_WIDTH,
+} from "../railLayout"
 
 type Props = {}
 
@@ -26,15 +29,10 @@ export default Feed
 
 const StyledWrapper = styled.div`
   > .content {
-    /* Clears the nav strip above it, with room for the tag list to drop
-       open underneath the heading without crowding it. */
-    padding: 3.5rem 1.25rem 4rem;
+    padding: ${RAIL_PADDING_MOBILE};
 
     @media (min-width: 1024px) {
-      /* clear the fixed rail on the right and the floating wordmark above.
-         The side margins stay tight so the covers, not the whitespace, are
-         what the page is mostly made of. */
-      padding: 9rem 1.5rem 8rem 3vw;
+      padding: ${RAIL_PADDING_DESKTOP};
       margin-right: ${RAIL_WIDTH};
     }
   }

@@ -54,18 +54,19 @@ const RootLayout = ({ children }: Props) => {
     Prism.highlightAll();
   }, []);
 
-  // The feed is a full-bleed gallery; every other route keeps the centred column.
-  const isFeed = router.pathname === "/"
+  // The feed and the gallery are full-bleed pages that sit beside the fixed
+  // nav rail; every other route keeps the centred column.
+  const isRailPage = ["/", "/gallery"].includes(router.pathname)
 
   return (
     <ThemeProvider scheme={scheme}>
       <Scripts />
       {/* // TODO: replace react query */}
       {/* {metaConfig.type !== "Paper" && <Header />} */}
-  <Header fullWidth={isFeed} bare={isFeed} />
-  <StyledMain data-full-width={isFeed}>{children}</StyledMain>
-  {/* The gallery front page is deliberately still; snow only on the other routes. */}
-  {!isFeed && <SnowEffect />}
+  <Header fullWidth={isRailPage} bare={isRailPage} />
+  <StyledMain data-full-width={isRailPage}>{children}</StyledMain>
+  {/* The rail pages are deliberately still; snow only on the other routes. */}
+  {!isRailPage && <SnowEffect />}
     </ThemeProvider>
 
   )
