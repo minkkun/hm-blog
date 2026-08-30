@@ -25,9 +25,9 @@ const CONFIG = {
   // The note under the heading. `linkText` is the part that becomes the link.
   // The line only appears once `href` is set, so it never ships a dead word.
   gallery: {
-    note: "Read about why the gallery is published",
-    linkText: "here",
-    href: "",
+    note: "I know posting about what you like is cringe in this economy, but",
+    linkText: "hear me out",
+    href: "/gallery-opening",
   },
 
   // CONFIG configration (required)
