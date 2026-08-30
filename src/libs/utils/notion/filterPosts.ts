@@ -37,15 +37,19 @@ export function filterPosts(
       if (requireSlug && !post.slug) return false
       return true
     })
-    // filter status
+    /**
+     * Status and type are read defensively: a Notion row with the column left
+     * empty arrives as undefined, and indexing it threw during prerender,
+     * failing the whole build over one unfinished row. A row that cannot say
+     * what it is simply matches nothing.
+     */
     .filter((post) => {
-      const postStatus = post.status[0]
-      return acceptStatus.includes(postStatus)
+      const postStatus = post.status?.[0]
+      return !!postStatus && acceptStatus.includes(postStatus)
     })
-    // filter type
     .filter((post) => {
-      const postType = post.type[0]
-      return acceptType.includes(postType)
+      const postType = post.type?.[0]
+      return !!postType && acceptType.includes(postType)
     })
   return filteredPosts
 }
