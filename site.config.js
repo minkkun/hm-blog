@@ -21,6 +21,15 @@ const CONFIG = {
     scheme: "light", // 'light' | 'dark' | 'system'
   },
 
+  // gallery page (optional)
+  // The note under the heading. `linkText` is the part that becomes the link.
+  // The line only appears once `href` is set, so it never ships a dead word.
+  gallery: {
+    note: "Read about why the gallery is published",
+    linkText: "here",
+    href: "",
+  },
+
   // CONFIG configration (required)
   link: "https://kunplaceofmink.vercel.app",
   since: "", // If leave this empty, current year will be used.
