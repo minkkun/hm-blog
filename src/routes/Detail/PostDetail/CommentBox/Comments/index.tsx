@@ -36,8 +36,10 @@ const StyledWrapper = styled.div`
   border-top: 1px solid ${({ theme }) => theme.colors.line};
 
   /* Covers the heading, the form and every comment: the inputs and buttons
-     are reset with \`all: unset\` globally, so they inherit this too. */
-  font-family: var(--font-sans);
+     are reset with \`all: unset\` globally, so they inherit this too.
+     Garamond runs small for its point size, hence the bump. */
+  font-family: var(--font-comment);
+  font-size: 1.0625rem;
 
   > .title {
     margin-bottom: 1rem;
