@@ -27,7 +27,6 @@ const StyledWrapper = styled.div`
   padding-right: 1.5rem;
   padding-top: 3rem;
   padding-bottom: 3rem;
-  border-radius: 1.5rem;
   max-width: 56rem;
   .wrapper {
     display: flex;

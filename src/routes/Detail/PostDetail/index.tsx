@@ -48,13 +48,13 @@ const StyledWrapper = styled.div`
   padding-right: 1.5rem;
   padding-top: 3rem;
   padding-bottom: 3rem;
-  border-radius: 1.5rem;
   /* Kept in proportion to the narrower text column, so the card stays a card
      rather than becoming a wide frame around a thin ribbon of text. */
   max-width: 50rem;
   background-color: ${({ theme }) => theme.colors.card};
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
-    0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  /* Square and unshadowed. Without the shadow the card barely parts from the
+     paper it sits on, so a hairline holds its edge instead. */
+  border: 1px solid ${({ theme }) => theme.colors.line};
   margin: 0 auto;
   > article {
     margin: 0 auto;
