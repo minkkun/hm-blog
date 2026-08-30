@@ -26,6 +26,9 @@ export const colors = {
     // Surfaces that sit on the paper: a shade lighter, same warmth, so they
     // lift off the ground without the cold snap of pure white.
     card: "#FAF8F3",
+    // Rules and field borders. Warm rather than one of the cool Radix grays,
+    // which read faintly blue against the paper.
+    line: "#D8CCB8",
   },
   dark: {
     ...indigoDark,
@@ -35,5 +38,6 @@ export const colors = {
     ...greenDark,
     paper: grayDark.gray2,
     card: grayDark.gray4,
+    line: grayDark.gray6,
   },
 }

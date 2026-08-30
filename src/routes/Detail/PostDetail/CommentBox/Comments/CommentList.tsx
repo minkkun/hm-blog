@@ -47,7 +47,7 @@ const StyledWrapper = styled.ul`
     flex-direction: column;
     gap: 0.375rem;
     padding-bottom: 1.25rem;
-    border-bottom: 1px solid ${({ theme }) => theme.colors.gray5};
+    border-bottom: 1px solid ${({ theme }) => theme.colors.line};
 
     :last-of-type {
       padding-bottom: 0;

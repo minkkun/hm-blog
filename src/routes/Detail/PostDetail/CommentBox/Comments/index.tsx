@@ -33,7 +33,7 @@ export default Comments
 const StyledWrapper = styled.div`
   margin-top: 2.5rem;
   padding-top: 2rem;
-  border-top: 1px solid ${({ theme }) => theme.colors.gray5};
+  border-top: 1px solid ${({ theme }) => theme.colors.line};
 
   /* Covers the heading, the form and every comment: the inputs and buttons
      are reset with \`all: unset\` globally, so they inherit this too. */

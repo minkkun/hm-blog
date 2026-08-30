@@ -27,7 +27,7 @@ const CONFIG = {
   gallery: {
     note: "I know posting about what you like is cringe in this economy, but",
     linkText: "hear me out",
-    href: "/gallery-opening",
+    href: "",
   },
 
   // CONFIG configration (required)

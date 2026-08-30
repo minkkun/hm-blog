@@ -6,14 +6,6 @@ type Props = {
   postId: string
 }
 
-/**
- * Upper-case the first letter of each word, leaving the rest alone so names
- * like "McDonald" or "JJ" survive intact. Mirrors the `text-transform` on the
- * input, so what gets stored matches what was on screen while typing.
- */
-const capitalize = (value: string) =>
-  value.replace(/(^|\s)(\S)/g, (_, space, letter) => space + letter.toUpperCase())
-
 const CommentForm: React.FC<Props> = ({ postId }) => {
   const [name, setName] = useState("")
   const [body, setBody] = useState("")
@@ -25,8 +17,9 @@ const CommentForm: React.FC<Props> = ({ postId }) => {
     e.preventDefault()
     if (!canSubmit) return
 
+    // Stored exactly as typed — a name is the commenter's to spell.
     mutate(
-      { name: capitalize(name.trim()), body: body.trim() },
+      { name: name.trim(), body: body.trim() },
       // Keep the name around so writing a second comment doesn't mean
       // typing it again.
       { onSuccess: () => setBody("") }
@@ -42,14 +35,15 @@ const CommentForm: React.FC<Props> = ({ postId }) => {
         onChange={(e) => setName(e.target.value)}
         placeholder="Your name"
         maxLength={60}
-        autoCapitalize="words"
+        // Phone keyboards would otherwise force a capital after every space.
+        autoCapitalize="none"
         autoComplete="name"
       />
       <textarea
         className="body"
         value={body}
         onChange={(e) => setBody(e.target.value)}
-        placeholder="Leave a comment..."
+        placeholder="no log-in needed, why don't my dear friend leave a thought?"
         rows={4}
       />
       <div className="bottom">
@@ -64,52 +58,49 @@ const CommentForm: React.FC<Props> = ({ postId }) => {
 
 export default CommentForm
 
+/**
+ * Square corners, one hairline, nothing filled: the fields are drawn rather
+ * than built, so the section reads as part of the page instead of a widget
+ * sitting on top of it.
+ */
 const StyledWrapper = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 0.625rem;
   margin-bottom: 2rem;
 
   .name,
   .body {
     outline-style: none;
     width: 100%;
+    border: 1px solid ${({ theme }) => theme.colors.line};
+    border-radius: 0;
+    background-color: transparent;
     color: ${({ theme }) => theme.colors.gray12};
+    transition: border-color 200ms ease;
 
     ::placeholder {
       color: ${({ theme }) => theme.colors.gray10};
     }
-  }
-
-  /* Outlined and narrow, so it reads as an identity field rather than as
-     more of the message. */
-  .name {
-    padding: 0.5rem 1rem;
-    max-width: 16rem;
-    border-radius: 999px;
-    border: 1px solid ${({ theme }) => theme.colors.gray6};
-    background-color: transparent;
-    font-size: 1.0625rem;
-    font-weight: 700;
-    text-transform: capitalize;
-
-    /* ...but leave the placeholder as written. */
-    &::placeholder {
-      text-transform: none;
-    }
 
     :focus {
-      border-color: ${({ theme }) => theme.colors.gray8};
+      border-color: ${({ theme }) => theme.colors.gray9};
     }
   }
 
-  /* Filled and full width — the main writing surface. */
+  /* Narrow, so it reads as an identity field rather than more of the message. */
+  .name {
+    padding: 0.5rem 0.875rem;
+    max-width: 16rem;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  /* The main writing surface. */
   .body {
-    padding: 0.625rem 1rem;
-    border-radius: 1rem;
-    background-color: ${({ theme }) => theme.colors.gray4};
+    padding: 0.75rem 0.875rem;
     resize: vertical;
-    line-height: 1.5rem;
+    line-height: 1.6;
     font-family: inherit;
     font-size: inherit;
   }
@@ -127,16 +118,27 @@ const StyledWrapper = styled.form`
     }
 
     button {
-      padding: 0.375rem 1rem;
-      border-radius: 1rem;
+      padding: 0.4375rem 1.25rem;
+      border: 1px solid ${({ theme }) => theme.colors.line};
+      border-radius: 0;
+      background-color: transparent;
+      font-size: 0.875rem;
       font-weight: 500;
+      color: ${({ theme }) => theme.colors.gray12};
       cursor: pointer;
-      color: ${({ theme }) => theme.colors.gray1};
-      background-color: ${({ theme }) => theme.colors.gray12};
+      transition: background-color 200ms ease, border-color 200ms ease,
+        color 200ms ease;
+
+      /* Fills only on intent, so at rest the form is all outline. */
+      :hover:not(:disabled) {
+        border-color: ${({ theme }) => theme.colors.gray12};
+        background-color: ${({ theme }) => theme.colors.gray12};
+        color: ${({ theme }) => theme.colors.paper};
+      }
 
       :disabled {
         cursor: not-allowed;
-        opacity: 0.5;
+        opacity: 0.45;
       }
     }
   }
