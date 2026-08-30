@@ -112,11 +112,9 @@ const StyledWrapper = styled.div`
     color: ${({ theme }) => theme.colors.gray12};
   }
 
-  /* The tag sits a shade back from its parent crumb, and takes the same
-     Garamond the tag chips use so a name looks the same wherever it appears. */
+  /* The tag sits a shade back from its parent crumb, but keeps the heading's
+     mono: it continues that line rather than starting a new voice. */
   > .current {
-    font-family: var(--font-garamond);
-    letter-spacing: 0.06em;
     color: ${({ theme }) => theme.colors.gray11};
   }
 
@@ -190,9 +188,9 @@ const StyledWrapper = styled.div`
     }
 
     a {
-      font-family: var(--font-garamond);
-      font-size: 0.875rem;
-      letter-spacing: 0.06em;
+      font-family: var(--font-label);
+      font-size: 0.6875rem;
+      letter-spacing: 0.14em;
       line-height: 1.5;
       text-transform: uppercase;
       white-space: nowrap;
