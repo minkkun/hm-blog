@@ -1,7 +1,6 @@
 import styled from "@emotion/styled"
 import { useRouter } from "next/router"
 import React from "react"
-import { isSerifTag } from "src/constants"
 
 type Props = {
   children: string
@@ -14,10 +13,7 @@ const Tag: React.FC<Props> = ({ children }) => {
     router.push(`/?tag=${value}`)
   }
   return (
-    <StyledWrapper
-      data-serif={isSerifTag(children)}
-      onClick={() => handleClick(children)}
-    >
+    <StyledWrapper onClick={() => handleClick(children)}>
       {children}
     </StyledWrapper>
   )
@@ -25,21 +21,21 @@ const Tag: React.FC<Props> = ({ children }) => {
 
 export default Tag
 
+/** Drawn, not filled: a hairline outline and the page showing through. */
 const StyledWrapper = styled.div`
-  padding-top: 0.25rem;
-  padding-bottom: 0.25rem;
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
-  font-size: 0.75rem;
-  line-height: 1rem;
-  font-weight: 400;
-  color: ${({ theme }) => theme.colors.gray10};
-  background-color: ${({ theme }) => theme.colors.gray5};
+  padding: 0.1875rem 0.625rem;
+  width: fit-content;
+  border: 1px solid ${({ theme }) => theme.colors.line};
+  background-color: transparent;
+  font-family: var(--font-garamond);
+  font-size: 0.9375rem;
+  line-height: 1.4;
+  color: ${({ theme }) => theme.colors.gray11};
   cursor: pointer;
+  transition: border-color 200ms ease, color 200ms ease;
 
-  /* Bookish tags are set in the reading serif rather than the label mono. */
-  &[data-serif="true"] {
-    font-family: var(--font-prose);
-    font-size: 0.8125rem;
+  :hover {
+    border-color: ${({ theme }) => theme.colors.gray9};
+    color: ${({ theme }) => theme.colors.gray12};
   }
 `

@@ -2,7 +2,6 @@ import styled from "@emotion/styled"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import React, { useEffect, useRef, useState } from "react"
-import { isSerifTag } from "src/constants"
 import { useTagsQuery } from "src/hooks/useTagsQuery"
 
 type Props = {}
@@ -66,9 +65,7 @@ const TagFilter: React.FC<Props> = () => {
 
       {/* Turned right, the arrow reads as the separator: POSTS > SCI-FI */}
       {currentTag && (
-        <span className="current" data-serif={isSerifTag(currentTag)}>
-          {currentTag}
-        </span>
+        <span className="current">{currentTag}</span>
       )}
 
       {/* Flies out to the right, in the direction the arrow turns to point. */}
@@ -78,7 +75,6 @@ const TagFilter: React.FC<Props> = () => {
             key={tag}
             href={tagHref(tag === currentTag ? undefined : tag)}
             data-active={tag === currentTag}
-            data-serif={isSerifTag(tag)}
             scroll={false}
             onClick={() => setOpen(false)}
           >
@@ -116,15 +112,12 @@ const StyledWrapper = styled.div`
     color: ${({ theme }) => theme.colors.gray12};
   }
 
-  /* The tag sits a shade back from its parent crumb. */
+  /* The tag sits a shade back from its parent crumb, and takes the same
+     Garamond the tag chips use so a name looks the same wherever it appears. */
   > .current {
+    font-family: var(--font-garamond);
+    letter-spacing: 0.06em;
     color: ${({ theme }) => theme.colors.gray11};
-
-    /* Bookish tags read in the prose serif rather than the label mono. */
-    &[data-serif="true"] {
-      font-family: var(--font-prose);
-      letter-spacing: 0.08em;
-    }
   }
 
   > .trigger {
@@ -197,21 +190,14 @@ const StyledWrapper = styled.div`
     }
 
     a {
-      font-family: var(--font-label);
-      font-size: 0.6875rem;
-      letter-spacing: 0.14em;
+      font-family: var(--font-garamond);
+      font-size: 0.875rem;
+      letter-spacing: 0.06em;
       line-height: 1.5;
       text-transform: uppercase;
       white-space: nowrap;
       color: ${({ theme }) => theme.colors.gray11};
       transition: color 200ms ease;
-
-      /* Bookish tags read in the prose serif rather than the label mono. */
-      &[data-serif="true"] {
-        font-family: var(--font-prose);
-        font-size: 0.8125rem;
-        letter-spacing: 0.08em;
-      }
 
       &[data-active="true"] {
         color: ${({ theme }) => theme.colors.gray12};

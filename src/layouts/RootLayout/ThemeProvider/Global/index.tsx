@@ -30,8 +30,8 @@ export const Global = () => {
           --font-page: ${imFellEnglish.style.fontFamily};
           /* general-purpose sans with Vietnamese — gallery notes */
           --font-sans: ${beVietnamPro.style.fontFamily};
-          /* book serif for the comment section */
-          --font-comment: ${ebGaramond.style.fontFamily};
+          /* book serif — comments, tags, categories */
+          --font-garamond: ${ebGaramond.style.fontFamily};
         }
 
         body {
