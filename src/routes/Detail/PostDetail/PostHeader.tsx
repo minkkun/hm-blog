@@ -5,6 +5,7 @@ import { formatDate } from "src/libs/utils"
 import Image from "next/image"
 import React from "react"
 import styled from "@emotion/styled"
+import { COVER_TRANSITION_NAME } from "src/libs/viewTransition"
 
 type Props = {
   data: TPost
@@ -49,11 +50,27 @@ const PostHeader: React.FC<Props> = ({ data }) => {
             )}
           </div>
           {data.thumbnail && (
-            <div className="thumbnail">
+            /* The far end of the morph: the cover clicked on the feed grows
+               into this one. Loaded eagerly so there is something to grow
+               into by the time the browser photographs the page. */
+            <div
+              className="thumbnail"
+              style={
+                {
+                  // Camel case, not the hyphenated form: React assigns a
+                  // hyphenated standard property straight onto the style
+                  // object, where it never reaches CSS. Cast because the
+                  // property is newer than the typings this project ships.
+                  viewTransitionName: COVER_TRANSITION_NAME,
+                } as React.CSSProperties
+              }
+            >
               <Image
                 src={data.thumbnail}
                 css={{ objectFit: "cover" }}
                 fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 50rem"
                 alt={data.title}
               />
             </div>

@@ -58,6 +58,40 @@ export const Global = () => {
           box-sizing: border-box;
         }
 
+        /* Opening a post: the cover clicked on the feed grows into the one at
+           the head of the article while the rest of the page changes under it.
+           Slower than the cross-fade, so the eye follows the one thing that
+           moves rather than the whole page turning over at once. */
+        ::view-transition-group(post-cover) {
+          animation-duration: 460ms;
+          animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* The two covers are cropped differently — the feed's is tall, the
+           post's is wide — and the default letterboxes each inside the box as
+           it morphs, which shows as the image sliding within its own frame.
+           Filling and cropping instead keeps it reading as one photograph. */
+        ::view-transition-old(post-cover),
+        ::view-transition-new(post-cover) {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          animation-duration: 460ms;
+        }
+
+        ::view-transition-old(root),
+        ::view-transition-new(root) {
+          animation-duration: 300ms;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+          ::view-transition-group(*),
+          ::view-transition-old(*),
+          ::view-transition-new(*) {
+            animation: none;
+          }
+        }
+
         h1,
         h2,
         h3,

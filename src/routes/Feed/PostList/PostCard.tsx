@@ -1,7 +1,10 @@
 import Link from "next/link"
+import { useRouter } from "next/router"
+import React, { useRef } from "react"
 import { TPost } from "../../../types"
 import Image from "next/image"
 import styled from "@emotion/styled"
+import { navigateWithCover } from "src/libs/viewTransition"
 
 type Props = {
   data: TPost
@@ -42,10 +45,23 @@ const DRIFT = [
 const PostCard: React.FC<Props> = ({ data, index = 0 }) => {
   const ratio = RATIOS[index % RATIOS.length]
   const drift = DRIFT[index % DRIFT.length]
+  const router = useRouter()
+  const coverRef = useRef<HTMLDivElement>(null)
+  const href = `/${data.slug}`
+
+  // The cover is named on the element itself rather than through state: the
+  // browser photographs the page the instant the transition starts, so the
+  // name has to be on the node before that call, not a render later.
+  const handleClick = (e: React.MouseEvent) => {
+    // Leave modified clicks alone — they open a new tab, with nothing to morph.
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return
+    if (navigateWithCover(router, href, coverRef.current)) e.preventDefault()
+  }
 
   return (
     <StyledWrapper
-      href={`/${data.slug}`}
+      href={href}
+      onClick={handleClick}
       style={
         {
           "--drift-x": `${drift.x}%`,
@@ -53,7 +69,11 @@ const PostCard: React.FC<Props> = ({ data, index = 0 }) => {
         } as React.CSSProperties
       }
     >
-      <div className="thumbnail" style={{ paddingBottom: `${ratio}%` }}>
+      <div
+        className="thumbnail"
+        ref={coverRef}
+        style={{ paddingBottom: `${ratio}%` }}
+      >
         {data.thumbnail ? (
           <Image
             src={data.thumbnail}
