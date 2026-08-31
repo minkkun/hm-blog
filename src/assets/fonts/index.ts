@@ -1,6 +1,7 @@
 export * from './pretendard'
 export * from './wordmark'
 export * from './martianMono'
+export * from './spaceMono'
 export * from './lora'
 export * from './instrumentSerif'
 export * from './imFellEnglish'

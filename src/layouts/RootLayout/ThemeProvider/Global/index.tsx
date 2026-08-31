@@ -9,6 +9,7 @@ import {
   lora,
   martianMono,
   pretendard,
+  spaceMono,
   wordmark,
 } from "src/assets"
 
@@ -23,8 +24,11 @@ export const Global = () => {
           --font-body: ${pretendard.style.fontFamily};
           /* handwriting — the wordmark only */
           --font-wordmark: ${wordmark.style.fontFamily};
-          /* tracked-uppercase labels — nav, titles, captions, dates */
-          --font-label: ${martianMono.style.fontFamily};
+          /* tracked-uppercase labels — nav, titles, captions, dates. Backed
+             by Space Mono, which supplies only the Vietnamese letters Martian
+             Mono does not draw; everything else still comes from Martian. */
+          --font-label: ${martianMono.style.fontFamily},
+            ${spaceMono.style.fontFamily};
           /* reading serif — blog post titles and body copy */
           --font-prose: ${lora.style.fontFamily};
           /* display serif — the name under a gallery print. Backed by Lora,
