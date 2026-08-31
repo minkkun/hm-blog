@@ -40,6 +40,15 @@ const StyledWrapper = styled.div`
     padding: 0 0 ${PAGE_BOTTOM_DESKTOP};
   }
 
+  /* A page centres itself on the window, so it cannot carry a bottom padding:
+     that height would sit below the centred box and push it up off the middle.
+     A post scrolls and still wants the room at its foot. */
+  &[data-type="Page"] {
+    @media (min-width: 1024px) {
+      padding-bottom: 0;
+    }
+  }
+
   /* Aligns with the article below it until the link goes fixed at 1200px. */
   > .back {
     margin: 0 auto;

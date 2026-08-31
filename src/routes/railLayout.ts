@@ -15,3 +15,10 @@ export const RAIL_PADDING_MOBILE = `${PAGE_TOP_MOBILE} 1.25rem ${PAGE_BOTTOM_MOB
 
 /** Clears the fixed rail on the right and the floating wordmark above. */
 export const RAIL_PADDING_DESKTOP = `${PAGE_TOP_DESKTOP} 1.5rem ${PAGE_BOTTOM_DESKTOP} 3vw`
+
+/**
+ * Above this the page is wide enough that a centred column clears the rail on
+ * its own, so the column stops reserving the rail's width and centres on the
+ * window instead. Below it the rail would be sat on, so the width is reserved.
+ */
+export const CENTRE_ON_WINDOW = "1280px"

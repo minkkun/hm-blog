@@ -42,7 +42,7 @@ import 'prismjs/components/prism-yaml.js'
 import "prismjs/components/prism-go.js"
 import SnowEffect from "src/layouts/RootLayout/SnowEffect";
 import SideNav from "./SideNav"
-import { RAIL_WIDTH } from "src/routes/railLayout"
+import { CENTRE_ON_WINDOW, RAIL_WIDTH } from "src/routes/railLayout"
 
 type Props = {
   children: ReactNode
@@ -91,6 +91,12 @@ const StyledMain = styled.main`
      centres on what is left over instead of being shoved off the middle. */
   @media (min-width: 1024px) {
     padding-right: ${RAIL_WIDTH};
+  }
+
+  /* Wide enough that a column centred on the window still clears the rail, so
+     it stops leaning left to avoid something it no longer touches. */
+  @media (min-width: ${CENTRE_ON_WINDOW}) {
+    padding-right: 0;
   }
 
   > .column {

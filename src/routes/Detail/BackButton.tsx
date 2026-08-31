@@ -1,7 +1,7 @@
 import styled from "@emotion/styled"
 import Link from "next/link"
 import React from "react"
-import { RAIL_WIDTH } from "../railLayout"
+import { CENTRE_ON_WINDOW } from "../railLayout"
 
 type Props = {}
 
@@ -46,13 +46,17 @@ const StyledWrapper = styled(Link)`
      It measures from the middle of what the rail leaves rather than from the
      middle of the window — otherwise it drifts in towards the card as the
      window narrows and ends up sitting on its edge. */
-  @media (min-width: 1200px) {
+  /* Waits for the width at which the article centres on the window, so it can
+     measure from the same middle the article does. Any earlier and it has to
+     chase a column that is still leaning away from the rail — which put it
+     off the left edge of the window entirely between 1200 and 1256. */
+  @media (min-width: ${CENTRE_ON_WINDOW}) {
     position: fixed;
     /* Halfway down, so it answers the scheme switch sitting at the same
        height in the rail opposite — one mark on each margin. */
     top: 50%;
     transform: translateY(-50%);
-    left: calc((100% - ${RAIL_WIDTH}) / 2 - 33rem);
+    left: calc(50% - 33rem);
     margin-bottom: 0;
   }
 `

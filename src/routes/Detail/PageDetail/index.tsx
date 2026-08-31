@@ -28,10 +28,19 @@ export default PageDetail
 const StyledWrapper = styled.div`
   max-width: 50rem;
   margin: 0 auto;
-  /* Matches the padding inside a post's card, so the first line of a page
-     lands at the same height as the first line of a post even though there
-     is no panel here drawing it. */
   padding-top: 3rem;
+
+  /* One short statement, so it sits on the middle of the window rather than
+     hanging from the top of it. Twice the wordmark's height comes out: once
+     for the band it actually occupies above, and once more below to answer
+     it, which leaves the centre of what remains on the centre of the window. */
+  @media (min-width: 1024px) {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: calc(100vh - 9rem);
+    padding-top: 0;
+  }
 
   > article {
     margin: 0 auto;
@@ -42,6 +51,11 @@ const StyledWrapper = styled.div`
        here re-faces the rendered page without touching code blocks. */
     --notion-font: var(--font-page);
     font-family: var(--font-page);
+    /* Flush to both edges. IM Fell English is narrow and the measure is short,
+       so hyphenation is on to keep justification from opening rivers. */
+    text-align: justify;
+    -webkit-hyphens: auto;
+    hyphens: auto;
 
     .notion {
       font-size: 1.125rem;
