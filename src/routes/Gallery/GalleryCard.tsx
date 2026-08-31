@@ -140,10 +140,10 @@ const StyledWrapper = styled.button`
 
       > .title {
         margin: 0;
-        font-family: var(--font-prose);
-        font-size: 1.5rem;
-        font-weight: 700;
-        line-height: 1.15;
+        font-family: var(--font-display);
+        font-size: 1.75rem;
+        font-weight: 400;
+        line-height: 1.1;
         color: ${({ theme }) => theme.colors.gray12};
       }
 

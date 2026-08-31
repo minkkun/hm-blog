@@ -195,12 +195,14 @@ const StyledOverlay = styled.div`
     > .body {
       padding: 1.5rem 1.5rem 1.25rem;
 
+      /* The same face as the tile it opened from, at the same size: the
+         dialog should read as that card enlarged, not as a second design. */
       > .title {
         margin: 0 0 0.375rem;
-        font-family: var(--font-prose);
-        font-size: 1.5rem;
-        font-weight: 700;
-        line-height: 1.15;
+        font-family: var(--font-display);
+        font-size: 1.75rem;
+        font-weight: 400;
+        line-height: 1.1;
         color: ${({ theme }) => theme.colors.gray12};
       }
 

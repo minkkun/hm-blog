@@ -5,6 +5,7 @@ import {
   beVietnamPro,
   ebGaramond,
   imFellEnglish,
+  instrumentSerif,
   lora,
   martianMono,
   pretendard,
@@ -26,6 +27,10 @@ export const Global = () => {
           --font-label: ${martianMono.style.fontFamily};
           /* reading serif — blog post titles and body copy */
           --font-prose: ${lora.style.fontFamily};
+          /* display serif — the name under a gallery print. Backed by Lora,
+             which supplies the Vietnamese letters it does not draw. */
+          --font-display: ${instrumentSerif.style.fontFamily},
+            ${lora.style.fontFamily};
           /* letterpress serif — standalone pages such as About */
           --font-page: ${imFellEnglish.style.fontFamily};
           /* general-purpose sans with Vietnamese — gallery notes */
