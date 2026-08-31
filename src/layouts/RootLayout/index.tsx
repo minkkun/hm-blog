@@ -41,6 +41,8 @@ import 'prismjs/components/prism-wasm.js'
 import 'prismjs/components/prism-yaml.js'
 import "prismjs/components/prism-go.js"
 import SnowEffect from "src/layouts/RootLayout/SnowEffect";
+import SideNav from "./SideNav"
+import { RAIL_WIDTH } from "src/routes/railLayout"
 
 type Props = {
   children: ReactNode
@@ -54,19 +56,25 @@ const RootLayout = ({ children }: Props) => {
     Prism.highlightAll();
   }, []);
 
-  // The feed and the gallery are full-bleed pages that sit beside the fixed
-  // nav rail; every other route keeps the centred column.
-  const isRailPage = ["/", "/gallery"].includes(router.pathname)
+  // The feed and the gallery lay their own content out full-bleed; the rest
+  // keep a centred column. The chrome around them — the wordmark at the page
+  // edge and the nav rail down the right — is the same everywhere, so a post
+  // and the feed no longer look like two different sites.
+  const laysOutFullBleed = ["/", "/gallery"].includes(router.pathname)
 
   return (
     <ThemeProvider scheme={scheme}>
       <Scripts />
       {/* // TODO: replace react query */}
       {/* {metaConfig.type !== "Paper" && <Header />} */}
-  <Header fullWidth={isRailPage} bare={isRailPage} />
-  <StyledMain data-full-width={isRailPage}>{children}</StyledMain>
-  {/* The rail pages are deliberately still; snow only on the other routes. */}
-  {!isRailPage && <SnowEffect />}
+      {/* Always bare: the rail carries the nav and the scheme switch. */}
+      <Header fullWidth bare />
+      <SideNav />
+      <StyledMain data-full-bleed={laysOutFullBleed}>
+        <div className="column">{children}</div>
+      </StyledMain>
+      {/* The feed and gallery are deliberately still; snow only elsewhere. */}
+      {!laysOutFullBleed && <SnowEffect />}
     </ThemeProvider>
 
   )
@@ -75,15 +83,29 @@ const RootLayout = ({ children }: Props) => {
 export default RootLayout
 
 const StyledMain = styled.main`
-  margin: 0 auto;
-  width: 100%;
-  max-width: 1120px;
-  padding: 0 1rem;
   position: relative;
   z-index: 1; /* ensure main content (inputs/text) renders above the snow canvas */
 
-  &[data-full-width="true"] {
-    max-width: none;
-    padding: 0;
+  /* The rail is fixed to the right edge from 1024 up, so the page reserves
+     its width here. Padding rather than a margin: the column inside then
+     centres on what is left over instead of being shoved off the middle. */
+  @media (min-width: 1024px) {
+    padding-right: ${RAIL_WIDTH};
+  }
+
+  > .column {
+    margin: 0 auto;
+    max-width: 1120px;
+    padding: 0 1rem;
+  }
+
+  /* The feed and the gallery place their own padding and rail clearance. */
+  &[data-full-bleed="true"] {
+    padding-right: 0;
+
+    > .column {
+      max-width: none;
+      padding: 0;
+    }
   }
 `

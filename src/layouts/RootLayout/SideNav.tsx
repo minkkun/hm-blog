@@ -37,7 +37,9 @@ const SideNav: React.FC<Props> = () => {
         <Link href="/gallery" data-active={router.pathname === "/gallery"}>
           Gallery
         </Link>
-        <Link href="/about">About</Link>
+        <Link href="/about" data-active={router.query.slug === "about"}>
+          About
+        </Link>
       </nav>
 
       <div className="scheme">

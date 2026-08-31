@@ -3,7 +3,6 @@ import Link from "next/link"
 import React, { useState } from "react"
 import { CONFIG } from "site.config"
 
-import SideNav from "../Feed/SideNav"
 import GalleryCard from "./GalleryCard"
 import GalleryModal from "./GalleryModal"
 import useGalleryQuery from "src/hooks/useGalleryQuery"
@@ -26,7 +25,6 @@ const Gallery: React.FC<Props> = () => {
 
   return (
     <StyledWrapper>
-      <SideNav />
       <div className="content">
         <h1 className="page-title">Gallery</h1>
         {/* The line exists to carry the link, so it waits for a destination

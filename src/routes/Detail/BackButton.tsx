@@ -1,6 +1,7 @@
 import styled from "@emotion/styled"
 import Link from "next/link"
 import React from "react"
+import { PAGE_TOP_DESKTOP, RAIL_WIDTH } from "../railLayout"
 
 type Props = {}
 
@@ -41,11 +42,14 @@ const StyledWrapper = styled(Link)`
   }
 
   /* Once the viewport is wide enough to have a left margin free of the
-     article, the link moves into it and stays put while the post scrolls. */
+     article, the link moves into it and stays put while the post scrolls.
+     It measures from the middle of what the rail leaves rather than from the
+     middle of the window — otherwise it drifts in towards the card as the
+     window narrows and ends up sitting on its edge. */
   @media (min-width: 1200px) {
     position: fixed;
-    top: 5rem;
-    left: calc(50% - 33rem);
+    top: ${PAGE_TOP_DESKTOP};
+    left: calc((100% - ${RAIL_WIDTH}) / 2 - 33rem);
     margin-bottom: 0;
   }
 `

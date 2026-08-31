@@ -1,7 +1,6 @@
 import styled from "@emotion/styled"
 
 import PostList from "./PostList"
-import SideNav from "./SideNav"
 import TagFilter from "./TagFilter"
 import {
   RAIL_PADDING_DESKTOP,
@@ -16,7 +15,6 @@ const Feed: React.FC<Props> = () => {
     <StyledWrapper>
       {/* On mobile the rail collapses into a scrolling strip above the grid;
           on desktop it is fixed to the right edge, so DOM order is moot. */}
-      <SideNav />
       <div className="content">
         <TagFilter />
         <PostList q="" />
