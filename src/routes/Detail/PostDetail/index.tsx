@@ -6,6 +6,7 @@ import Category from "src/components/Category"
 import styled from "@emotion/styled"
 import NotionRenderer from "../components/NotionRenderer"
 import usePostQuery from "src/hooks/usePostQuery"
+import { detailCard } from "../detailCard"
 
 type Props = {}
 
@@ -44,18 +45,8 @@ const PostDetail: React.FC<Props> = () => {
 export default PostDetail
 
 const StyledWrapper = styled.div`
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-  padding-top: 3rem;
-  padding-bottom: 3rem;
-  /* Kept in proportion to the narrower text column, so the card stays a card
-     rather than becoming a wide frame around a thin ribbon of text. */
-  max-width: 50rem;
-  background-color: ${({ theme }) => theme.colors.card};
-  /* Square and unshadowed. Without the shadow the card barely parts from the
-     paper it sits on, so a hairline holds its edge instead. */
-  border: 1px solid ${({ theme }) => theme.colors.line};
-  margin: 0 auto;
+  ${({ theme }) => detailCard(theme)}
+
   > article {
     margin: 0 auto;
     /* Holds the line to ~65 characters at the size below. Much past 75 and
