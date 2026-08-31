@@ -28,6 +28,10 @@ export default PageDetail
 const StyledWrapper = styled.div`
   max-width: 50rem;
   margin: 0 auto;
+  /* Matches the padding inside a post's card, so the first line of a page
+     lands at the same height as the first line of a post even though there
+     is no panel here drawing it. */
+  padding-top: 3rem;
 
   > article {
     margin: 0 auto;

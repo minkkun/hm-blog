@@ -7,7 +7,6 @@ import usePostQuery from "src/hooks/usePostQuery"
 import {
   PAGE_BOTTOM_DESKTOP,
   PAGE_BOTTOM_MOBILE,
-  PAGE_TOP_DESKTOP,
   PAGE_TOP_MOBILE,
 } from "../railLayout"
 
@@ -32,12 +31,13 @@ const Detail: React.FC<Props> = () => {
 export default Detail
 
 const StyledWrapper = styled.div`
-  /* The same rhythm the feed and the gallery start and end on, so a post
-     opens at the height a reader last saw the wall open at. */
   padding: ${PAGE_TOP_MOBILE} 0 ${PAGE_BOTTOM_MOBILE};
 
+  /* No top padding of its own: the card starts directly under the wordmark
+     and supplies the air itself, from the inside. What sits below decides
+     where its own first line falls. */
   @media (min-width: 1024px) {
-    padding: ${PAGE_TOP_DESKTOP} 0 ${PAGE_BOTTOM_DESKTOP};
+    padding: 0 0 ${PAGE_BOTTOM_DESKTOP};
   }
 
   /* Aligns with the article below it until the link goes fixed at 1200px. */

@@ -1,7 +1,7 @@
 import styled from "@emotion/styled"
 import Link from "next/link"
 import React from "react"
-import { PAGE_TOP_DESKTOP, RAIL_WIDTH } from "../railLayout"
+import { RAIL_WIDTH } from "../railLayout"
 
 type Props = {}
 
@@ -48,7 +48,10 @@ const StyledWrapper = styled(Link)`
      window narrows and ends up sitting on its edge. */
   @media (min-width: 1200px) {
     position: fixed;
-    top: ${PAGE_TOP_DESKTOP};
+    /* Halfway down, so it answers the scheme switch sitting at the same
+       height in the rail opposite — one mark on each margin. */
+    top: 50%;
+    transform: translateY(-50%);
     left: calc((100% - ${RAIL_WIDTH}) / 2 - 33rem);
     margin-bottom: 0;
   }
