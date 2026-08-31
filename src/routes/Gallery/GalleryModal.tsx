@@ -218,7 +218,9 @@ const StyledOverlay = styled.div`
       }
 
       /* The note is the reason the dialog exists, so it runs in full here
-         rather than clamped the way a tile would need. */
+         rather than clamped the way a tile would need. Set flush to both
+         edges — the panel is narrow enough that justification opens rivers,
+         so hyphenation is on to give the line-breaker somewhere to give. */
       > .note {
         margin: 0 0 1.5rem;
         font-family: var(--font-sans);
@@ -226,6 +228,9 @@ const StyledOverlay = styled.div`
         line-height: 1.65;
         color: ${({ theme }) => theme.colors.gray11};
         white-space: pre-line;
+        text-align: justify;
+        -webkit-hyphens: auto;
+        hyphens: auto;
       }
 
       > .meta {
