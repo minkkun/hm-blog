@@ -57,9 +57,15 @@ const StyledWrapper = styled.div`
     -webkit-hyphens: auto;
     hyphens: auto;
 
+    /* Steps down on a phone for the same reason a post does: held close, on
+       a third of the measure, 18px reads oversized. */
     .notion {
-      font-size: 1.125rem;
+      font-size: 0.9rem;
       line-height: 1.65;
+
+      @media (min-width: 768px) {
+        font-size: 1.125rem;
+      }
     }
   }
 `

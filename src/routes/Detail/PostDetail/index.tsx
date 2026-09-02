@@ -65,10 +65,27 @@ const StyledWrapper = styled.div`
 
     /* Notion's own 16px/1.5 is a UI default, not a reading one. Everything
        react-notion-x sizes is relative to this, so headings and code scale
-       with it rather than needing their own overrides. */
+       with it rather than needing their own overrides.
+
+       A phone holds the page closer than a desk does, and the measure is a
+       third as wide, so the same 18px that reads generously on a monitor
+       reads oversized in the hand. It steps up at the tablet break. */
     .notion {
-      font-size: 1.125rem;
+      font-size: 0.9rem;
       line-height: 1.65;
+
+      @media (min-width: 768px) {
+        font-size: 1.125rem;
+      }
+
+      /* react-notion-x parts paragraphs with 3px of padding and 1px of margin
+         a side — 8px of white, which with the half-leading above and below
+         makes a band of about 20px between one paragraph and the next. Two
+         more pixels each way widens that band by a fifth. */
+      .notion-text {
+        margin-top: 3px;
+        margin-bottom: 3px;
+      }
     }
   }
 `
