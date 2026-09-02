@@ -15,12 +15,13 @@ const SideNav: React.FC<Props> = () => {
   const [scheme, setScheme] = useScheme()
   const currentTag = router.query.tag || undefined
 
-  // Tag filtering lives in the flyout beside the "Posts" heading; the rail
-  // entry just clears whatever tag is applied, which lands on the bare feed —
-  // the Featured shelf, hence the label. Same destination as that heading.
+  // Tag filtering lives in the flyout beside the feed's own heading; the rail
+  // entry just clears whatever tag is applied and lands on the bare feed. It
+  // names the section rather than the view, so it stays "Blog" while the
+  // heading over there says which shelf you are on.
   // Names the pathname explicitly: a query-only href keeps whatever page you
   // are on, which would strand this on the gallery instead of the feed.
-  const featuredHref = () => {
+  const blogHref = () => {
     const { tag, ...rest } = router.query
     return { pathname: "/", query: rest }
   }
@@ -29,11 +30,11 @@ const SideNav: React.FC<Props> = () => {
     <StyledWrapper>
       <nav className="nav">
         <Link
-          href={featuredHref()}
+          href={blogHref()}
           data-active={router.pathname === "/" && !currentTag}
           scroll={false}
         >
-          Featured
+          Blog
         </Link>
         <Link href="/gallery" data-active={router.pathname === "/gallery"}>
           Gallery
@@ -99,6 +100,11 @@ const StyledWrapper = styled.aside`
 
   > .nav {
     display: flex;
+    /* The three destinations carry more weight than the scheme switch and the
+       colophon below them, so they are set larger than the rail's base size
+       rather than sharing it. Written against that size so the two stay
+       related if either moves. */
+    font-size: calc(0.6875rem * 1.3);
     padding: 0.5rem 1.25rem 0;
     gap: 1.25rem;
     overflow-x: auto;
@@ -140,7 +146,9 @@ const StyledWrapper = styled.aside`
       padding: 0;
       gap: 0.5rem;
       overflow: visible;
-      line-height: 1.5;
+      /* A tenth more leading than the labels elsewhere: stacked and set
+         larger, the three want more air between them than a caption does. */
+      line-height: calc(1.5 * 1.1);
     }
 
     /* Both blocks claim the leftover space, so the scheme switch settles

@@ -2,10 +2,17 @@ import styled from "@emotion/styled"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import React, { useEffect, useRef, useState } from "react"
-import { ALL_TAG, isFeaturedTag } from "src/constants"
+import { ALL_TAG, isHiddenTag } from "src/constants"
 import { useTagsQuery } from "src/hooks/useTagsQuery"
 
 type Props = {}
+
+/** The one mark this nav is built from: a rest-state ▾ that turns into a ›. */
+const Caret: React.FC<{ className?: string }> = ({ className }) => (
+  <svg className={className} viewBox="0 0 10 6" width="10" height="6" aria-hidden="true">
+    <path d="M0 0 L10 0 L5 6 Z" fill="currentColor" />
+  </svg>
+)
 
 const TagFilter: React.FC<Props> = () => {
   const router = useRouter()
@@ -32,28 +39,20 @@ const TagFilter: React.FC<Props> = () => {
     }
   }, [open])
 
-  // Names the pathname explicitly for the same reason the rail does: a
-  // query-only href keeps whatever page you are on.
+  // Names the pathname explicitly: a query-only href keeps whatever page you
+  // are on, which would strand these on the gallery instead of the feed.
   const tagHref = (value?: string) => {
     const { tag, ...rest } = router.query
     return { pathname: "/", query: value ? { ...rest, tag: value } : rest }
   }
 
-  // All and Featured are views in their own right, so they head the list and
-  // the ordinary tags follow. Featured is dropped from that tail: it is the
-  // shelf the bare feed already is, not one tag among the others — and it has
-  // no address of its own, since "/" is already that shelf.
-  const views = [
-    { label: "All", href: tagHref(ALL_TAG), active: currentTag === ALL_TAG },
-    { label: "Featured", href: tagHref(undefined), active: !currentTag },
-    ...Object.keys(tags)
-      .filter((tag) => !isFeaturedTag(tag))
-      .map((tag) => ({
-        label: tag,
-        href: tagHref(tag),
-        active: tag === currentTag,
-      })),
-  ]
+  // Only the ordinary tags fan out from All. Featured is a view of its own a
+  // line below, and the ignored ones never surface anywhere.
+  const tagList = Object.keys(tags).filter((tag) => !isHiddenTag(tag))
+
+  // The crumb after the heading names whatever is narrowing the shelf; on the
+  // bare feed nothing is, so the arrow stays at rest.
+  const crumb = currentTag === ALL_TAG ? "All" : currentTag
 
   return (
     <StyledWrapper ref={wrapperRef}>
@@ -61,10 +60,10 @@ const TagFilter: React.FC<Props> = () => {
         {/* Off the default view the heading is the way back to it. */}
         {currentTag ? (
           <Link href={tagHref(undefined)} scroll={false}>
-            Posts
+            Featured
           </Link>
         ) : (
-          "Posts"
+          "Featured"
         )}
       </h1>
 
@@ -76,29 +75,55 @@ const TagFilter: React.FC<Props> = () => {
         aria-label="Filter posts by tag"
         onClick={() => setOpen((prev) => !prev)}
       >
-        <svg viewBox="0 0 10 6" width="10" height="6" aria-hidden="true">
-          <path d="M0 0 L10 0 L5 6 Z" fill="currentColor" />
-        </svg>
+        <Caret />
       </button>
 
-      {/* Turned right, the arrow reads as the separator: POSTS > SCI-FI */}
-      {currentTag && (
-        <span className="current">{currentTag}</span>
-      )}
+      {/* Turned right, the arrow reads as the separator: FEATURED > SCI-FI */}
+      {crumb && <span className="current">{crumb}</span>}
 
       {/* Flies out to the right, in the direction the arrow turns to point. */}
       <div className="flyout" data-open={open}>
-        {views.map((view) => (
+        {/* Two views only. The tags belong to All — they are the ways of
+            cutting the whole archive — so they hang off it rather than
+            crowding the choice between the two shelves. */}
+        <div className="row">
           <Link
-            key={view.label}
-            href={view.href}
-            data-active={view.active}
+            href={tagHref(ALL_TAG)}
+            data-active={currentTag === ALL_TAG}
             scroll={false}
             onClick={() => setOpen(false)}
           >
-            {view.label}
+            All
           </Link>
-        ))}
+
+          {tagList.length > 0 && (
+            <div className="tags">
+              <Caret />
+              {tagList.map((tag, index) => (
+                <React.Fragment key={tag}>
+                  {index > 0 && <span className="pipe">|</span>}
+                  <Link
+                    href={tagHref(tag)}
+                    data-active={tag === currentTag}
+                    scroll={false}
+                    onClick={() => setOpen(false)}
+                  >
+                    {tag}
+                  </Link>
+                </React.Fragment>
+              ))}
+            </div>
+          )}
+        </div>
+
+        <Link
+          href={tagHref(undefined)}
+          data-active={!currentTag}
+          scroll={false}
+          onClick={() => setOpen(false)}
+        >
+          Featured
+        </Link>
       </div>
     </StyledWrapper>
   )
@@ -220,6 +245,59 @@ const StyledWrapper = styled.div`
       }
       :hover {
         color: ${({ theme }) => theme.colors.gray12};
+      }
+    }
+
+    /* All and the tags it carries share one line. */
+    > .row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem 0.75rem;
+
+      @media (min-width: 768px) {
+        flex-wrap: nowrap;
+      }
+    }
+
+    .tags {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+
+      /* The lead-in mark, turned to point along the line it opens. */
+      > svg {
+        display: block;
+        flex-shrink: 0;
+        color: ${({ theme }) => theme.colors.gray9};
+        transform: rotate(-90deg);
+      }
+
+      > .pipe {
+        font-family: var(--font-label);
+        font-size: 0.6875rem;
+        line-height: 1.5;
+        color: ${({ theme }) => theme.colors.gray8};
+      }
+    }
+
+    /* Where there is a pointer the tags stay tucked behind All and snap out
+       along the line when it is hovered. A touch screen has no hover to wait
+       on, so there they simply sit open, wrapping under All if need be. */
+    @media (hover: hover) {
+      .tags {
+        visibility: hidden;
+        opacity: 0;
+        transform: translateX(-0.375rem);
+        transition: opacity 180ms ease,
+          transform 180ms cubic-bezier(0.4, 0, 0.2, 1), visibility 180ms;
+      }
+
+      > .row:hover .tags,
+      > .row:focus-within .tags {
+        visibility: visible;
+        opacity: 1;
+        transform: none;
       }
     }
   }

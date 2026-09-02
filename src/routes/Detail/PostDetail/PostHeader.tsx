@@ -1,6 +1,6 @@
 import { CONFIG } from "site.config"
 import Tag from "src/components/Tag"
-import { isFeaturedTag } from "src/constants"
+import { isHiddenTag } from "src/constants"
 import { TPost } from "src/types"
 import { formatDate } from "src/libs/utils"
 import Image from "next/image"
@@ -13,9 +13,10 @@ type Props = {
 }
 
 const PostHeader: React.FC<Props> = ({ data }) => {
-  // "featured" decides which posts head the feed; it is not something the
-  // reader is meant to see, so it never joins the chips.
-  const tags = data.tags?.filter((tag) => !isFeaturedTag(tag)) ?? []
+  // "featured" decides which posts head the feed and "morethanlog" is a
+  // leftover; neither is something the reader is meant to see, so they never
+  // join the chips.
+  const tags = data.tags?.filter((tag) => !isHiddenTag(tag)) ?? []
 
   return (
     <StyledWrapper>
