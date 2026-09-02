@@ -1,5 +1,6 @@
 import { CONFIG } from "site.config"
 import Tag from "src/components/Tag"
+import { isFeaturedTag } from "src/constants"
 import { TPost } from "src/types"
 import { formatDate } from "src/libs/utils"
 import Image from "next/image"
@@ -12,6 +13,10 @@ type Props = {
 }
 
 const PostHeader: React.FC<Props> = ({ data }) => {
+  // "featured" decides which posts head the feed; it is not something the
+  // reader is meant to see, so it never joins the chips.
+  const tags = data.tags?.filter((tag) => !isFeaturedTag(tag)) ?? []
+
   return (
     <StyledWrapper>
       <h1 className="title">{data.title}</h1>
@@ -41,9 +46,9 @@ const PostHeader: React.FC<Props> = ({ data }) => {
             </div>
           </div>
           <div className="mid">
-            {data.tags && (
+            {tags.length > 0 && (
               <div className="tags">
-                {data.tags.map((tag: string) => (
+                {tags.map((tag: string) => (
                   <Tag key={tag}>{tag}</Tag>
                 ))}
               </div>

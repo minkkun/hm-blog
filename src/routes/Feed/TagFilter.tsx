@@ -2,6 +2,7 @@ import styled from "@emotion/styled"
 import Link from "next/link"
 import { useRouter } from "next/router"
 import React, { useEffect, useRef, useState } from "react"
+import { ALL_TAG, isFeaturedTag } from "src/constants"
 import { useTagsQuery } from "src/hooks/useTagsQuery"
 
 type Props = {}
@@ -31,16 +32,33 @@ const TagFilter: React.FC<Props> = () => {
     }
   }, [open])
 
-  // Selecting the active tag clears the filter, same as the rail's "All".
+  // Names the pathname explicitly for the same reason the rail does: a
+  // query-only href keeps whatever page you are on.
   const tagHref = (value?: string) => {
     const { tag, ...rest } = router.query
-    return { query: value ? { ...rest, tag: value } : rest }
+    return { pathname: "/", query: value ? { ...rest, tag: value } : rest }
   }
+
+  // All and Featured are views in their own right, so they head the list and
+  // the ordinary tags follow. Featured is dropped from that tail: it is the
+  // shelf the bare feed already is, not one tag among the others — and it has
+  // no address of its own, since "/" is already that shelf.
+  const views = [
+    { label: "All", href: tagHref(ALL_TAG), active: currentTag === ALL_TAG },
+    { label: "Featured", href: tagHref(undefined), active: !currentTag },
+    ...Object.keys(tags)
+      .filter((tag) => !isFeaturedTag(tag))
+      .map((tag) => ({
+        label: tag,
+        href: tagHref(tag),
+        active: tag === currentTag,
+      })),
+  ]
 
   return (
     <StyledWrapper ref={wrapperRef}>
       <h1 className="title">
-        {/* Once filtered the heading is the way back to every post. */}
+        {/* Off the default view the heading is the way back to it. */}
         {currentTag ? (
           <Link href={tagHref(undefined)} scroll={false}>
             Posts
@@ -70,15 +88,15 @@ const TagFilter: React.FC<Props> = () => {
 
       {/* Flies out to the right, in the direction the arrow turns to point. */}
       <div className="flyout" data-open={open}>
-        {Object.keys(tags).map((tag) => (
+        {views.map((view) => (
           <Link
-            key={tag}
-            href={tagHref(tag === currentTag ? undefined : tag)}
-            data-active={tag === currentTag}
+            key={view.label}
+            href={view.href}
+            data-active={view.active}
             scroll={false}
             onClick={() => setOpen(false)}
           >
-            {tag}
+            {view.label}
           </Link>
         ))}
       </div>

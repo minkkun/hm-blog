@@ -15,11 +15,12 @@ const SideNav: React.FC<Props> = () => {
   const [scheme, setScheme] = useScheme()
   const currentTag = router.query.tag || undefined
 
-  // Tag filtering now lives in the flyout beside the "Posts" heading; "All"
-  // here just clears whatever tag is applied.
+  // Tag filtering lives in the flyout beside the "Posts" heading; the rail
+  // entry just clears whatever tag is applied, which lands on the bare feed —
+  // the Featured shelf, hence the label. Same destination as that heading.
   // Names the pathname explicitly: a query-only href keeps whatever page you
-  // are on, which would strand "All" on the gallery instead of the feed.
-  const allHref = () => {
+  // are on, which would strand this on the gallery instead of the feed.
+  const featuredHref = () => {
     const { tag, ...rest } = router.query
     return { pathname: "/", query: rest }
   }
@@ -28,11 +29,11 @@ const SideNav: React.FC<Props> = () => {
     <StyledWrapper>
       <nav className="nav">
         <Link
-          href={allHref()}
+          href={featuredHref()}
           data-active={router.pathname === "/" && !currentTag}
           scroll={false}
         >
-          All
+          Featured
         </Link>
         <Link href="/gallery" data-active={router.pathname === "/gallery"}>
           Gallery
