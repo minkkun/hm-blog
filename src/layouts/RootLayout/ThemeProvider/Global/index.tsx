@@ -8,7 +8,9 @@ import {
   instrumentSerif,
   lora,
   pretendard,
+  martianMono,
   redditMono,
+  spaceMono,
   wordmark,
 } from "src/assets"
 
@@ -23,14 +25,18 @@ export const Global = () => {
           --font-body: ${pretendard.style.fontFamily};
           /* handwriting — the wordmark only */
           --font-wordmark: ${wordmark.style.fontFamily};
-          /* tracked-uppercase labels — nav, titles, captions, dates.
-             One face, not two: Martian Mono cannot draw Vietnamese at all, and
-             filling its gaps from a second mono showed as a visibly narrower,
-             lighter letter inside the word — Hợp, ăn — which reads as a fault
-             rather than a font. Reddit Mono draws the whole alphabet itself,
-             at close enough to Martian's width and weight that a tracked line
-             of labels keeps the colour it had. */
-          --font-label: ${redditMono.style.fontFamily};
+          /* tracked-uppercase labels — nav, dates, captions, tags, colophon.
+             Backed by Space Mono, which supplies only the Vietnamese letters
+             Martian Mono does not draw; everything else still comes from
+             Martian. These run short and small enough that the join does not
+             read. */
+          --font-label: ${martianMono.style.fontFamily},
+            ${spaceMono.style.fontFamily};
+          /* the feed's post titles — the one label that carries a whole
+             Vietnamese sentence, where that same join is glaring. Reddit Mono
+             draws the alphabet entire, and is near enough to Martian Mono in
+             width and colour to sit beside it. */
+          --font-title: ${redditMono.style.fontFamily};
           /* reading serif — blog post titles and body copy */
           --font-prose: ${lora.style.fontFamily};
           /* display serif — the name under a gallery print. Backed by Lora,

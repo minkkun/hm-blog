@@ -125,9 +125,14 @@ const StyledWrapper = styled(Link)`
 
   > .title {
     margin-top: 1.25rem;
-    font-family: var(--font-label);
-    font-size: 0.6875rem;
-    font-weight: 400;
+    /* Its own face: see --font-title. */
+    font-family: var(--font-title);
+    /* Written as the label size it grew from rather than the number it lands
+       on, so the relationship survives a change to either. */
+    font-size: calc(0.6875rem * 1.15);
+    /* Reddit Mono is variable, so this is a real 420 rather than a jump to
+       the next static cut. */
+    font-weight: 420;
     line-height: 1.6;
     letter-spacing: 0.14em;
     text-transform: uppercase;
