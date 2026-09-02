@@ -8,7 +8,7 @@ import {
   instrumentSerif,
   lora,
   pretendard,
-  spaceMono,
+  redditMono,
   wordmark,
 } from "src/assets"
 
@@ -27,8 +27,10 @@ export const Global = () => {
              One face, not two: Martian Mono cannot draw Vietnamese at all, and
              filling its gaps from a second mono showed as a visibly narrower,
              lighter letter inside the word — Hợp, ăn — which reads as a fault
-             rather than a font. Space Mono draws the whole alphabet itself. */
-          --font-label: ${spaceMono.style.fontFamily};
+             rather than a font. Reddit Mono draws the whole alphabet itself,
+             at close enough to Martian's width and weight that a tracked line
+             of labels keeps the colour it had. */
+          --font-label: ${redditMono.style.fontFamily};
           /* reading serif — blog post titles and body copy */
           --font-prose: ${lora.style.fontFamily};
           /* display serif — the name under a gallery print. Backed by Lora,
