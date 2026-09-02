@@ -7,7 +7,6 @@ import {
   imFellEnglish,
   instrumentSerif,
   lora,
-  martianMono,
   pretendard,
   spaceMono,
   wordmark,
@@ -24,11 +23,12 @@ export const Global = () => {
           --font-body: ${pretendard.style.fontFamily};
           /* handwriting — the wordmark only */
           --font-wordmark: ${wordmark.style.fontFamily};
-          /* tracked-uppercase labels — nav, titles, captions, dates. Backed
-             by Space Mono, which supplies only the Vietnamese letters Martian
-             Mono does not draw; everything else still comes from Martian. */
-          --font-label: ${martianMono.style.fontFamily},
-            ${spaceMono.style.fontFamily};
+          /* tracked-uppercase labels — nav, titles, captions, dates.
+             One face, not two: Martian Mono cannot draw Vietnamese at all, and
+             filling its gaps from a second mono showed as a visibly narrower,
+             lighter letter inside the word — Hợp, ăn — which reads as a fault
+             rather than a font. Space Mono draws the whole alphabet itself. */
+          --font-label: ${spaceMono.style.fontFamily};
           /* reading serif — blog post titles and body copy */
           --font-prose: ${lora.style.fontFamily};
           /* display serif — the name under a gallery print. Backed by Lora,
