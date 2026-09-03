@@ -1,10 +1,26 @@
 import Link from "next/link"
+import { useRouter } from "next/router"
 import { CONFIG } from "site.config"
 import styled from "@emotion/styled"
+import { navigateHoldingChrome } from "src/libs/viewTransition"
 
 const Logo = () => {
+  const router = useRouter()
+
+  // The wordmark goes to the same place the rail's Blog does, so it moves the
+  // same way — it would read as a fault if one animated and the other cut.
+  const handleClick = (e: React.MouseEvent) => {
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return
+    if (navigateHoldingChrome(router, "/")) e.preventDefault()
+  }
+
   return (
-    <StyledWrapper href="/" aria-label={CONFIG.blog.title}>
+    <StyledWrapper
+      href="/"
+      aria-label={CONFIG.blog.title}
+      data-chrome="wordmark"
+      onClick={handleClick}
+    >
       {CONFIG.blog.title}
     </StyledWrapper>
   )

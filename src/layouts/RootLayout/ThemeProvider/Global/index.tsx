@@ -92,6 +92,41 @@ export const Global = () => {
           animation-duration: 300ms;
         }
 
+        /* Moving between the sections: the wordmark and the rail are the same
+           elements on every route, so they are named and simply stay — the
+           browser holds those pixels instead of dissolving one copy into an
+           identical one. Only what actually changed moves, rising a little as
+           it arrives. Scoped to the attribute the router sets, so a cover
+           opening a post is left to its own morph. */
+        html[data-route-transition="true"] [data-chrome="wordmark"] {
+          view-transition-name: chrome-wordmark;
+        }
+        html[data-route-transition="true"] [data-chrome="rail"] {
+          view-transition-name: chrome-rail;
+        }
+
+        @keyframes route-out {
+          to {
+            opacity: 0;
+            transform: translateY(-0.5rem);
+          }
+        }
+        @keyframes route-in {
+          from {
+            opacity: 0;
+            transform: translateY(1rem);
+          }
+        }
+
+        /* The page behind is the same paper as the ground beneath it, so the
+           band this uncovers at the edge is invisible. */
+        html[data-route-transition="true"]::view-transition-old(root) {
+          animation: route-out 180ms ease both;
+        }
+        html[data-route-transition="true"]::view-transition-new(root) {
+          animation: route-in 320ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+        }
+
         @media (prefers-reduced-motion: reduce) {
           ::view-transition-group(*),
           ::view-transition-old(*),

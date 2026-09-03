@@ -4,6 +4,7 @@ import { useRouter } from "next/router"
 import React from "react"
 import { CONFIG } from "site.config"
 import useScheme from "src/hooks/useScheme"
+import { navigateHoldingChrome } from "src/libs/viewTransition"
 
 const year = new Date().getFullYear()
 const from = +CONFIG.since
@@ -26,20 +27,40 @@ const SideNav: React.FC<Props> = () => {
     return { pathname: "/", query: rest }
   }
 
+  // The rail and the wordmark are the same elements on every route, so the
+  // move between sections holds them still and lets only the page change.
+  const handleNavigate = (
+    e: React.MouseEvent,
+    href: Parameters<typeof navigateHoldingChrome>[1]
+  ) => {
+    // Leave modified clicks alone — they open a new tab, with nothing to move.
+    if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return
+    if (navigateHoldingChrome(router, href)) e.preventDefault()
+  }
+
   return (
-    <StyledWrapper>
+    <StyledWrapper data-chrome="rail">
       <nav className="nav">
         <Link
           href={blogHref()}
           data-active={router.pathname === "/" && !currentTag}
           scroll={false}
+          onClick={(e) => handleNavigate(e, blogHref())}
         >
           Blog
         </Link>
-        <Link href="/gallery" data-active={router.pathname === "/gallery"}>
+        <Link
+          href="/gallery"
+          data-active={router.pathname === "/gallery"}
+          onClick={(e) => handleNavigate(e, "/gallery")}
+        >
           Gallery
         </Link>
-        <Link href="/about" data-active={router.query.slug === "about"}>
+        <Link
+          href="/about"
+          data-active={router.query.slug === "about"}
+          onClick={(e) => handleNavigate(e, "/about")}
+        >
           About
         </Link>
       </nav>
